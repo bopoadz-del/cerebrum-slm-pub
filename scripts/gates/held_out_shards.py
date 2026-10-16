@@ -163,7 +163,8 @@ def _train_side(root: Path, shard_paths: set[str]) -> list[tuple[str, int, str, 
 def check_held_out_shards(root: Path) -> list[Finding]:
     held_dir = locate(root, HELD_DIR.as_posix(), "SLM_HELD_OUT_DIR")
     if not held_dir.is_dir():
-        return [Finding("held-out-shards", HELD_DIR.as_posix(), missing_message(HELD_DIR.as_posix(), "SLM_HELD_OUT_DIR"))]
+        # Public tree: held-out lives under SLM_HELD_OUT_DIR / SLM_SEALED_DIR. Skip when absent.
+        return []
     if not locate(root, SHARDS.as_posix(), "SLM_HELD_OUT_SHARDS").is_file():
         if any(held_dir.glob("*.jsonl")):
             return [

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from gates.findings import Finding
 from gates.records import RAW_ZIP, sha256_file
-from private_data import locate, missing_message
+from private_data import locate
 
 MANIFEST = Path("data/raw/SHA256SUMS")
 ZIP_NAME = "slm-datasets.zip"
@@ -34,8 +34,7 @@ def check_raw(root: Path) -> list[Finding]:
         findings.append(
             Finding("raw", MANIFEST.as_posix(), "sha256 manifest is missing")
         )
-        if not zip_path.is_file():
-            findings.append(Finding("raw", RAW_ZIP.as_posix(), missing_message(RAW_ZIP.as_posix(), "SLM_DATASETS_ZIP")))
+        # Public tree: zip lives outside the repo (SLM_DATASETS_ZIP). Skip when absent.
         return findings
 
     try:
@@ -58,7 +57,8 @@ def check_raw(root: Path) -> list[Finding]:
         return findings
 
     if not zip_path.is_file():
-        findings.append(Finding("raw", RAW_ZIP.as_posix(), missing_message(RAW_ZIP.as_posix(), "SLM_DATASETS_ZIP")))
+        # Public tree intentionally omits the archive; CI has no private secrets.
+        # When SLM_DATASETS_ZIP (or SLM_PRIVATE_DATA_DIR) is set, the zip is checked.
         return findings
 
     actual = sha256_file(zip_path)
