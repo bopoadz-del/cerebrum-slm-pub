@@ -1,0 +1,30 @@
+{
+  "base_model": "Qwen/Qwen3-8B",
+  "train_file": "data/train/pairs.jsonl",
+  "manifest_file": "data/train/manifest.json",
+  "chat_template": "qwen3",
+  "enable_thinking": false,
+  "loss_fn": "cross_entropy",
+  "loss_on": "assistant_turns_only",
+  "rank": 16,
+  "alpha": 16,
+  "target_modules": {
+    "mlp": true,
+    "attn": true,
+    "unembed": false
+  },
+  "learning_rate": 0.000473,
+  "optimizer": "adamw",
+  "beta1": 0.9,
+  "beta2": 0.95,
+  "eps": 1e-12,
+  "weight_decay": 0.0,
+  "grad_clip_norm": 1.0,
+  "epochs": 2,
+  "batch_size": 16,
+  "max_sequence_length": 2048,
+  "seed": 0,
+  "checkpoint_name": "posture-qwen3-8b-lora-r16",
+  "system_prompt_file": "eval/baselines/prompt_only_system_prompt.txt",
+  "target_format": "posture_json_v1"
+}

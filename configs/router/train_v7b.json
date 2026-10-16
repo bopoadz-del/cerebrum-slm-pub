@@ -1,0 +1,35 @@
+{
+  "run": "v7b",
+  "status": "repair attempt 1 of 2 after v7 (not promoted); trained once after this config merges, run record under docs/router/runs/v7b/ written after scoring",
+  "lora_config": "configs/lora/qwen3-4b-router-r16.json",
+  "overrides": {
+    "base_model": "Qwen/Qwen3.5-4B",
+    "max_sequence_length": 6656,
+    "epochs": 3,
+    "checkpoint_name": "router-v7b-qwen3.5-4b-lora-r16"
+  },
+  "class_weighting": {
+    "method": "tempered_inverse_frequency_loss_weight",
+    "exponent": 0.5,
+    "share_cap": 3.0,
+    "normalise": "mean weight over training examples = 1.0",
+    "source": "label counts of the v7b training examples only (base train rows plus generated pairs)",
+    "weights_file": "data/router/v7b/class_weights.json"
+  },
+  "training_examples": {
+    "base": "data/router/train.jsonl",
+    "pairs": [
+      "data/router/v7b/pairs_contrastive.jsonl",
+      "data/router/v7b/pairs_combined_form.jsonl",
+      "data/router/v7b/pairs_catch_all.jsonl",
+      "data/router/v7b/pairs_catch_all_sibling.jsonl"
+    ],
+    "pair_rules": "configs/router/pairs_v7b.json"
+  },
+  "selection": {
+    "metric": "val_macro_recall_present_classes",
+    "early_stop_patience": 1,
+    "tie": "earlier epoch"
+  },
+  "doc": "docs/router/V7B_TRAINING.md"
+}

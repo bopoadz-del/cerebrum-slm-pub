@@ -1,0 +1,120 @@
+{
+  "pool_file": "data/router/teacher_labels.jsonl",
+  "pool_sha256": "8f322f29c9abaeda875798efc2a2d6a0c892017866fe00887ee3830cd9564b82",
+  "rows": 4555,
+  "text_field": "excerpt",
+  "counts": {
+    "a": 0,
+    "b": 4120,
+    "c": 435
+  },
+  "shares_pct": {
+    "a": 0.0,
+    "b": 90.45,
+    "c": 9.55
+  },
+  "b_at_least_one_third": true,
+  "by_existing_teacher_label_reporting_only": {
+    "drawing": {
+      "a": 0,
+      "b": 3577,
+      "c": 115
+    },
+    "report": {
+      "a": 0,
+      "b": 167,
+      "c": 81
+    },
+    "spec": {
+      "a": 0,
+      "b": 145,
+      "c": 49
+    },
+    "correspondence": {
+      "a": 0,
+      "b": 68,
+      "c": 53
+    },
+    "RFI": {
+      "a": 0,
+      "b": 67,
+      "c": 53
+    },
+    "schedule": {
+      "a": 0,
+      "b": 49,
+      "c": 61
+    },
+    "submittal": {
+      "a": 0,
+      "b": 17,
+      "c": 8
+    },
+    "transmittal": {
+      "a": 0,
+      "b": 11,
+      "c": 6
+    },
+    "payment certificate": {
+      "a": 0,
+      "b": 10,
+      "c": 4
+    },
+    "claim": {
+      "a": 0,
+      "b": 3,
+      "c": 3
+    },
+    "VO/CO": {
+      "a": 0,
+      "b": 5,
+      "c": 1
+    },
+    "other": {
+      "a": 0,
+      "b": 1,
+      "c": 1
+    }
+  },
+  "family_hits": {
+    "b_gulf_place_authority": 4096,
+    "us_spelling": 1742,
+    "b_metric": 1105,
+    "b_spelling": 458,
+    "b_roles": 143,
+    "b_instruments": 75,
+    "b_currency": 39,
+    "b_standards": 26,
+    "us_imperial": 13,
+    "us_dot_federal": 8,
+    "us_practice_terms": 7,
+    "us_dollar": 5,
+    "b_contract_regime": 2,
+    "b_uk_au_nz_place": 1,
+    "us_state_name": 1,
+    "us_municipal": 1
+  },
+  "rule": "a if score_a>=3 and score_a>=score_b+2; b if score_b>=3 and score_b>=score_a+2; else c (family presence, weights 3/2/1)",
+  "inputs_used": "excerpt text only; no filename/folder/project/source/label fields",
+  "spot_check": {
+    "seed": 20261007,
+    "per_class": 25,
+    "a": "0 rows in class a; no sample possible. All 18 rows with US score>=2 were read: OSHA 29 CFR guidance notes, ASCE 7-16 excerpt, an AU utility bill, Gulf docs with US spelling/terms; none is US-form contract paperwork.",
+    "b": "25/25 read as Gulf (Diriyah Gate II / Riyadh / Dubai) content; 0 false positives seen.",
+    "c": "25 read: 16 carry same-project Gulf context without an explicit regional cue the rule counts (site-observation notes, P6 prints, drawing lists); 9 have no regional cue at all (blank letter template, BIM LOD text, rebar detail); 0 US."
+  },
+  "caveats": [
+    "Class b is dominated by one Saudi project (Diriyah Gate II infrastructure drawings): 3577 of 4120 b rows are teacher-labelled drawing.",
+    "Explicit FIDIC/NEC/JCT contract-regime text appears in only 2 rows; contract-instrument terms (VO, IPC, sub-clause, EOT, letter of acceptance) in 75 rows.",
+    "2140 of 4555 excerpts embed a [source: <drive path>] tag; it is stripped before scoring here.",
+    "Rows with explicit FIDIC/Gulf contract-practice signals (contract regime, Engineer/Employer/QS roles, VO/IPC/sub-clause/EOT instruments, SAR/AED/OMR/GBP/AUD amounts): 183 of 4555 (4.0%)."
+  ],
+  "non_drawing": {
+    "rows": 863,
+    "a": 0,
+    "b": 543,
+    "c": 320,
+    "b_pct": 62.92,
+    "c_pct": 37.08
+  }
+}

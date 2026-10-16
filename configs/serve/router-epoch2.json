@@ -1,0 +1,20 @@
+{
+  "artifact_id": "router-qwen3.5-4b-lora-r16-epoch2",
+  "base_model": "Qwen/Qwen3.5-4B",
+  "configured_base_model": "Qwen/Qwen3-4B",
+  "rank": 16,
+  "epochs": 2,
+  "steps": 168,
+  "checkpoint": "tinker://b0857111-57c4-56f6-bf9b-ed3f8021826b:train:0/sampler_weights/router-qwen3.5-4b-lora-r16-epoch2",
+  "status": "trained",
+  "wall": "WALL: Tinker does not serve Qwen/Qwen3-4B; trained on Qwen/Qwen3.5-4B with the same LoRA config.",
+  "labels_file": "configs/router/labels.json",
+  "input": "first_512_tokens of document content",
+  "sealed_scoring": false,
+  "sealed_scored": true,
+  "sealed_gate_result": "sealed gate: FAIL (gate defect: condition (b) unsatisfiable as written); router NOT marked passed",
+  "router_passed": false,
+  "vo_co_note": "VO/CO recall is 0/5. 3 outputs said 'change order', which the val parser maps to unsure, and they were not remapped.",
+  "api_key_env": "TINKER_API_KEY",
+  "max_sequence_length": 3072
+}

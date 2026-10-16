@@ -1,0 +1,27 @@
+{
+  "label_set": "v8",
+  "labels": [
+    "RFI",
+    "submittal",
+    "transmittal",
+    "VO/CO",
+    "claim",
+    "payment application",
+    "payment certificate",
+    "drawing",
+    "specification",
+    "schedule",
+    "report",
+    "correspondence",
+    "BOQ",
+    "contract",
+    "method statement",
+    "meeting minutes",
+    "NCR",
+    "inspection request",
+    "site instruction",
+    "register/log",
+    "other"
+  ],
+  "task": "document_type"
+}

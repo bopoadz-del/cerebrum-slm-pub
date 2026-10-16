@@ -1,0 +1,244 @@
+{
+  "source": {
+    "title": "Hydraulic Design of Highway Culverts, Hydraulic Design Series Number 5, Third Edition (April 2012)",
+    "publication": "FHWA-HIF-12-026",
+    "url": "https://www.fhwa.dot.gov/engineering/hydraulics/pubs/12026/hif12026.pdf",
+    "section": "Chapter 3 Culvert Hydraulic Design; Appendix A Inlet Control Equations",
+    "pdf_sha256": "0444c21f401925bc1e7e5d57c11053b7311f903df9bb3c7d451f90a0d1770058",
+    "pdf_pages": [
+      91,
+      92,
+      93,
+      94,
+      96,
+      97,
+      190,
+      191,
+      192
+    ]
+  },
+  "extracted_by": "scripts/eval/extract_hds5_equations.py",
+  "count": 18,
+  "equations": [
+    {
+      "id": "HDS5-3.1",
+      "number": "3.1",
+      "name": "total energy (HL) required to pass the flow through the culvert barrel is made up of the entrance loss (He), the friction losses through the barrel (Hf), and",
+      "inputs": [
+        "Hb",
+        "Hg",
+        "HL",
+        "Ho",
+        "Hf",
+        "He",
+        "Hj"
+      ],
+      "pdf_page": 91
+    },
+    {
+      "id": "HDS5-3.2",
+      "number": "3.2",
+      "name": "Average velocity in the culvert barrel, ft/s (m/s)",
+      "inputs": [
+        "V",
+        "Q",
+        "A"
+      ],
+      "pdf_page": 91
+    },
+    {
+      "id": "HDS5-3.3",
+      "number": "3.3",
+      "name": "The velocity head is",
+      "inputs": [
+        "HV"
+      ],
+      "pdf_page": 91
+    },
+    {
+      "id": "HDS5-3.4a",
+      "number": "3.4a",
+      "name": "The entrance loss is a function of the velocity head in the barrel, and can be expressed as a coefficient times the velocity head",
+      "inputs": [
+        "ke",
+        "He"
+      ],
+      "pdf_page": 91
+    },
+    {
+      "id": "HDS5-3.4b",
+      "number": "3.4b",
+      "name": "The friction loss is",
+      "inputs": [
+        "n",
+        "Hf",
+        "L",
+        "R"
+      ],
+      "pdf_page": 92
+    },
+    {
+      "id": "HDS5-3.4c",
+      "number": "3.4c",
+      "name": "The exit loss is",
+      "inputs": [
+        "Ho"
+      ],
+      "pdf_page": 92
+    },
+    {
+      "id": "HDS5-3.4d",
+      "number": "3.4d",
+      "name": "The exit loss is equal to the full flow velocity head in the barrel, as shown in Equation",
+      "inputs": [
+        "Ho",
+        "Hv"
+      ],
+      "pdf_page": 92
+    },
+    {
+      "id": "HDS5-3.4e",
+      "number": "3.4e",
+      "name": "Equation (3.4e)",
+      "inputs": [
+        "Ho",
+        "Vd",
+        "V"
+      ],
+      "pdf_page": 92
+    },
+    {
+      "id": "HDS5-3.5",
+      "number": "3.5",
+      "name": "The following equation for barrel losses (H) is obtained",
+      "inputs": [
+        "ke",
+        "L",
+        "R"
+      ],
+      "pdf_page": 92
+    },
+    {
+      "id": "HDS5-3.6a",
+      "number": "3.6a",
+      "name": "The following relationship results",
+      "inputs": [
+        "Vu",
+        "TW",
+        "Vd",
+        "HL"
+      ],
+      "pdf_page": 93
+    },
+    {
+      "id": "HDS5-3.6b",
+      "number": "3.6b",
+      "name": "Equation 3.6a becomes",
+      "inputs": [
+        "HWo",
+        "HL",
+        "LS",
+        "TW"
+      ],
+      "pdf_page": 93
+    },
+    {
+      "id": "HDS5-3.7",
+      "number": "3.7",
+      "name": "Full flow friction slope is",
+      "inputs": [
+        "L",
+        "n2",
+        "Sf",
+        "Hf",
+        "Ku"
+      ],
+      "pdf_page": 94
+    },
+    {
+      "id": "HDS5-3.8",
+      "number": "3.8",
+      "name": "Composite or weighted Manning's n value",
+      "inputs": [
+        "nc",
+        "G",
+        "p1",
+        "p2",
+        "n1",
+        "p"
+      ],
+      "pdf_page": 96
+    },
+    {
+      "id": "HDS5-3.9",
+      "number": "3.9",
+      "name": "Overtopping flow rate in ft³/s (m³/s)",
+      "inputs": [
+        "Qo",
+        "Cd"
+      ],
+      "pdf_page": 97
+    },
+    {
+      "id": "HDS5-A.1",
+      "number": "A.1",
+      "name": "Form (1) is based on the specific head at critical depth, adjusted with correction factors",
+      "inputs": [
+        "D",
+        "HWi",
+        "Hc",
+        "Ks",
+        "K",
+        "M",
+        "S",
+        "A",
+        "Q"
+      ],
+      "pdf_page": 190
+    },
+    {
+      "id": "HDS5-A.2",
+      "number": "A.2",
+      "name": "A.2.1 Unsubmerged Inlet Control Equations",
+      "inputs": [
+        "D",
+        "HWi",
+        "K",
+        "M",
+        "A",
+        "Q"
+      ],
+      "pdf_page": 191
+    },
+    {
+      "id": "HDS5-A.3",
+      "number": "A.3",
+      "name": "A.2.2 Submerged Inlet Control Equations",
+      "inputs": [
+        "D",
+        "HWi",
+        "Ks",
+        "Y",
+        "K",
+        "c",
+        "S",
+        "A",
+        "Q"
+      ],
+      "pdf_page": 191
+    },
+    {
+      "id": "HDS5-A.4",
+      "number": "A.4",
+      "name": "Therefore, specific head at critical depth divided by D is",
+      "inputs": [
+        "D",
+        "Hc",
+        "yh",
+        "dc",
+        "A"
+      ],
+      "pdf_page": 192
+    }
+  ]
+}

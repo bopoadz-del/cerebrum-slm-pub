@@ -1,0 +1,54 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+
+# Private data. Not in the working tree. Git history is unchanged.
+# Archive
+data/raw/slm-datasets.zip
+# Sealed and held-out
+data/eval/router_unseen/**/sealed_labels.jsonl
+data/eval/router_unseen/**/sealed_labels.jsonl.sha256
+data/eval/router_unseen/v9_web_f_addendum/held.jsonl
+data/eval/router_unseen/v9_web_g_addendum/held.jsonl
+data/sealed/**
+data/held_out/**
+data/eval/temporary_works/temporary_works_adversarial_blind.jsonl
+data/router/*_sealed_candidates_isolation.json
+data/router/sealed_cap_exhaustion.json
+docs/router/runs/*/sealed/**
+# Owner data
+data/router/additions_owner_laptop.jsonl
+data/router/additions_owner_sources_pr2.jsonl
+data/router/human_sample_PENDING_OWNER.csv
+data/augment/user_paraphrases.jsonl
+data/retrieval/rates/rates.jsonl
+data/retrieval/facilities/records.jsonl
+data/raw/router/labels.jsonl
+docs/serve/transcripts-epoch2.jsonl
+docs/audit/raw-reconciliation/raw_lines.jsonl
+
+# ORDERS_1305Z — private data never in public tree
+data/eval/router_unseen/**
+data/eval/unseen/**
+!data/eval/unseen/README.md
+data/held_out/**
+data/router/*.jsonl
+data/router/**/*.jsonl
+data/raw/**/*.jsonl
+data/raw/**/*.zip
+data/train/**
+data/augment/**
+data/**/*.zip
+docs/router/runs/**/sealed/**
+docs/router/runs/**/*predictions*.jsonl
+docs/router/runs/**/*.log

@@ -1,0 +1,35 @@
+{
+  "configured_base_model": "Qwen/Qwen3-4B",
+  "base_model": "Qwen/Qwen3.5-4B",
+  "base_model_substitution": "Tinker does not serve Qwen/Qwen3-4B (400 not supported). The run used Qwen/Qwen3.5-4B, LoRA rank 16, 2 epochs, 168 steps.",
+  "teacher_model": "Qwen/Qwen3-8B",
+  "teacher_temperature": 0,
+  "epochs": 2,
+  "rank": 16,
+  "alpha": 16,
+  "steps": 168,
+  "val_fraction": 0.15,
+  "configured_max_sequence_length": 2048,
+  "max_sequence_length": 3072,
+  "max_sequence_length_note": "130 train rows exceeded 2048 tokens with the Qwen3.5 tokenizer. The longest was 2996. This run used 3072.",
+  "split": "v2-series-grouped-stratified",
+  "split_seed": 20261006,
+  "drawing_cap_train": 600,
+  "cap_seed": 20261006,
+  "checkpoint": "tinker://b0857111-57c4-56f6-bf9b-ed3f8021826b:train:0/sampler_weights/router-qwen3.5-4b-lora-r16-epoch2",
+  "human_agreement_status": "done",
+  "human_agreement": {
+    "overall": 0.875,
+    "kappa": 0.864,
+    "compared": 64,
+    "matched": 56
+  },
+  "train_before_human_agreement": {
+    "enabled": true,
+    "recorded_at": "2026-10-06T03:45:00Z",
+    "owner_clock": "2026-10-06 07:45",
+    "owner_order": "CHADi: Go. Training proceeds before the human stratified agreement check."
+  },
+  "sealed_candidates": "Master Folder and a few public web documents, not the Fork pool. The isolation guard stays on and runs again when the owner sheet is sealed.",
+  "lora_config": "configs/lora/qwen3-4b-router-r16.json"
+}

@@ -1,0 +1,32 @@
+{
+  "purpose": "Zero-shot baselines on the v9 sealed set (319). Evaluation only; nothing here feeds training.",
+  "backend": "workers_ai",
+  "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_id}",
+  "auth_env": {"account_id": "CF_ACCOUNT_ID", "api_token": "CF_API_TOKEN"},
+  "label_set_doc": "docs/router/LABEL_SET_v9.md",
+  "labels_file": "configs/router/labels.json",
+  "sealed_eval": "configs/router/sealed_eval.json",
+  "question": {
+    "name": "document_type",
+    "type": "choice",
+    "instructions": "LABEL_SET_v9.md verbatim",
+    "criteria": "the 22 v9 label names, each null (the name describes itself)"
+  },
+  "image": {"page": 1, "dpi": 150, "format": "png", "max_images": 4, "max_body_bytes": 13631488},
+  "scanned_rule": {"min_chars": 200, "garbage_wordlike_share_max": 0.5, "garbage_min_tokens": 20},
+  "determinism": "Workers AI Clef takes model, state, questions, images only; it exposes no temperature, seed or sampling options. A choice answer is read from per-option probabilities (argmax), so no sampling is involved; nothing extra is sent.",
+  "budget": {"cap_usd": 10.0, "chars_per_token_estimate": 3.0, "image_tokens_max": 1027},
+  "pricing_source": "https://developers.cloudflare.com/workers-ai/models/clef-flash/ and https://developers.cloudflare.com/workers-ai/models/clef/ (checked 2026-10-10; output tokens not billed)",
+  "models": [
+    {"name": "clef-flash", "model_id": "@cf/cloudflare/clef-flash", "selector": "clef-flash", "usd_per_m_input": 0.038, "usd_per_m_output": 0.0, "context_tokens": 24576},
+    {"name": "clef", "model_id": "@cf/cloudflare/clef", "selector": "clef", "usd_per_m_input": 0.24, "usd_per_m_output": 0.0, "context_tokens": 65536}
+  ],
+  "v6_predictions": [
+    "docs/router/runs/v6/sealed/sealed_predictions.jsonl",
+    "docs/router/runs/v6/web_f/sealed_predictions.jsonl"
+  ],
+  "v6_name_blind_predictions": [
+    "docs/router/runs/v6/sealed/name_blind_predictions.jsonl",
+    "docs/router/runs/v6/web_f/name_blind_predictions.jsonl"
+  ]
+}

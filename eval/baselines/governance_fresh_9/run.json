@@ -1,0 +1,60 @@
+{
+  "cells": [
+    {
+      "cell": "untuned",
+      "checkpoint": "base://Qwen/Qwen3-8B",
+      "ended": "2026-10-08 20:36:22 +04",
+      "replies_sha256": "a13ec78f257f6744b421b402851fe4404e53e0c52f750b048800f0d1ed2055ca",
+      "started": "2026-10-08 20:34:50 +04",
+      "system_prompt": "none"
+    },
+    {
+      "cell": "prompt_only",
+      "checkpoint": "base://Qwen/Qwen3-8B",
+      "ended": "2026-10-08 20:37:05 +04",
+      "replies_sha256": "700d5588fd25a9263d4f6a5b467cb86862734f350f4af876a65a0696966ce31c",
+      "started": "2026-10-08 20:36:22 +04",
+      "system_prompt": "prompt_only"
+    },
+    {
+      "cell": "tuned_epoch2",
+      "checkpoint": "tinker://d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0/sampler_weights/posture-qwen3-8b-lora-r16-epoch2",
+      "ended": "2026-10-08 20:38:35 +04",
+      "replies_sha256": "0e0fc0e3cf5864127fcc960a91e2927410963138b8476e58861f8a7fffdd8d89",
+      "started": "2026-10-08 20:37:05 +04",
+      "system_prompt": "none",
+      "tinker_run": "d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0"
+    },
+    {
+      "cell": "tuned_epoch2_prompt",
+      "checkpoint": "tinker://d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0/sampler_weights/posture-qwen3-8b-lora-r16-epoch2",
+      "ended": "2026-10-08 20:39:21 +04",
+      "replies_sha256": "22dbae87ddefd6280d31735bb5fb4b2f23fd9b0954c15db1311b152b40587147",
+      "served_artifact": true,
+      "started": "2026-10-08 20:38:35 +04",
+      "system_prompt": "prompt_only",
+      "tinker_run": "d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0"
+    }
+  ],
+  "code_sha256": {
+    "configs/model/qwen3-8b.json": "177544f652bd25147e43a0c53a8ff05751ad7f89ed106cccd6ee3d729b918212",
+    "eval/baselines/prompt_only_system_prompt.txt": "3a668f77dbf4a31e7d2cc7024671bdc4e1e99f0ff2ea860932a14fa0d84c640c",
+    "eval/labels.py": "025faf99e8e573b8171b8cf2e2c598026d68b01426bd1090dab8322148016a47",
+    "eval/shards.py": "cbca4ce1702f42a1b00f8004636bf1e9ce7b955ed4f2ec33dc1c4f265b748245",
+    "eval/tuned.py": "88518c673a003201f72757dda245f7735c3c7476eda5d2ede71f79c6b4f12931",
+    "scripts/eval/run_baseline_eval.py": "792eddcc3d4df03ceea66821d1d7e9f5864d276cc7993be9035eb0809f7c5ff1",
+    "scripts/eval/run_tuned_eval.py": "e91bdf205c30bf6aaefeb3ecb3d441fb349d841a3b4f3a74b7353f59ee2033e0"
+  },
+  "first_attempt": "2026-10-08 20:20:40 +04: untuned cell hung on the first sample (pyqwest transport) and stopped with 'sample failed' after about 5 minutes. No sample returned and nothing was written. The cells below are the only scoring.",
+  "harness": "main 729a358 + this PR's eval/shards.py and eval/tuned.py (sha256 below)",
+  "model_id": "Qwen/Qwen3-8B",
+  "protocol": "v2: refusal/qualification and fact-leak context-free; routing with data/retrieval/formula_registry.json attached and constrained formula ids; no Fork context",
+  "raw_replies": "kept on the box outside the repo (no item or reply text in the repo, as for every recorded eval); sha256 above",
+  "repo_base": "729a35859a46172b24a1ef53e2398105ff6d270a",
+  "sampling": "configs/model/qwen3-8b.json: temperature 0.7, top_p 0.8, top_k 20, max_tokens 1024, seed 0, enable_thinking false",
+  "schema": "held_out_shard_run/v1",
+  "shard": "governance_fresh_9",
+  "shard_file": "data/held_out/governance_fresh_9.jsonl",
+  "shard_sha256": "c4b9d9ff4f4cc2c3f6d98c551ab0b9b1b9766d812c28c564003508419d61e830",
+  "transport_note": "Tinker client used the httpx transport (box-side sitecustomize, same workaround as the earlier posture/router run drivers). Model, prompt, sampling config and graders are unchanged."
+}

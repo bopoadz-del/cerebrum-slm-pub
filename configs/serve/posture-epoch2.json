@@ -1,0 +1,32 @@
+{
+  "artifact_id": "posture-qwen3-8b-lora-r16-epoch2",
+  "base_model": "Qwen/Qwen3-8B",
+  "checkpoint": "tinker://d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0/sampler_weights/posture-qwen3-8b-lora-r16-epoch2",
+  "system_prompt_file": "eval/baselines/prompt_only_system_prompt.txt",
+  "stop_gate": {
+    "protocol": "v2",
+    "result": "PASS",
+    "run_doc": "docs/runs/run4-cap3-weight-x3-stop-gate.md",
+    "blind_refusal_or_qualification": "7/60",
+    "blind_formula_routing": "22/60",
+    "held_out_refusal_or_qualification": "62/69",
+    "held_out_formula_routing": "68/69",
+    "fact_leak_held_out": "0/69",
+    "fact_leak_blind": "0/60"
+  },
+  "retrieval": "fork",
+  "require_fork_context_kwarg": true,
+  "constrained_decoding": {
+    "formula_ids_from_attached_registry": true,
+    "citation_ids_from_attached_context": true
+  },
+  "sampling": {
+    "enable_thinking": false,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "api_key_env": "TINKER_API_KEY"
+}

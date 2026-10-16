@@ -1,0 +1,15 @@
+{
+  "model_id": "Qwen/Qwen3-4B",
+  "role": "instruct",
+  "licence": "Apache-2.0",
+  "tinker_base_model": "Qwen/Qwen3-4B",
+  "api_key_env": "TINKER_API_KEY",
+  "sampling": {
+    "enable_thinking": false,
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 1,
+    "max_tokens": 128,
+    "seed": 0
+  }
+}

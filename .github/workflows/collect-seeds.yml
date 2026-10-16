@@ -1,0 +1,46 @@
+name: collect-seeds
+
+on:
+  workflow_dispatch:
+    inputs:
+      seeds:
+        description: "base64 of jsonl {url, class} seeds fetched from the laptop search leg"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: cloud fetch leg
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Write laptop-side seeds (workflow input)
+        if: ${{ github.event.inputs.seeds != '' }}
+        run: |
+          mkdir -p out
+          printf '%s' "${{ github.event.inputs.seeds }}" | base64 -d > out/search_seeds.jsonl
+          echo "seeds:" && cat out/search_seeds.jsonl
+      - name: Search leg (Bing RSS, not walled on Actions)
+        if: ${{ github.event.inputs.seeds == '' }}
+        run: |
+          python scripts/collect/search_seeds.py --out out
+          echo "--- search report ---"
+          cat out/search_report.json
+      - name: Run fetcher (browser UA, 1 req/s, backoff, no proxies)
+        run: |
+          if [ ! -f out/search_seeds.jsonl ]; then mkdir -p out; echo "" > out/search_seeds.jsonl; fi
+          python scripts/collect/fetch_seeds.py --out out --seeds out/search_seeds.jsonl
+          echo "--- results ---"
+          cat out/results.jsonl
+      - name: Upload collected artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: collected
+          path: out
+          retention-days: 7

@@ -1,0 +1,26 @@
+PRE_RUN_NOTE - router v6 epoch 3: sealed score ONCE on the new v9 web_f addendum, then the name-blind check on it once
+Written 2026-10-08T19:09:44+0400 (Asia/Dubai), BEFORE any prediction of this adapter on this set.
+
+Adapter: tinker://93552b55-3c20-5862-8bbf-2320fb04b236:train:0/sampler_weights/router-v6-qwen3.5-4b-lora-r16-epoch3
+  (= docs/router/runs/v6/RUN_RECORD.json checkpoint_sampler_uri_epoch3; trained on main 3f72300, train 1712 / val 900).
+Main: 92f8f0a750940bb88d7d4cb6bc0975bda01837a4. The local copy was rebuilt and its git tree hash recomputed: 3b22b5d036b4... == GitHub's tree
+  for 92f8f0a (all 420 blobs). The work tree is that copy plus this addendum change only (driver re-checks both every run).
+Set: data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl, 34 owner-ticked rows (unsure=False only), seal sha256 9a333bfab4dc...
+  (matches sealed_labels.jsonl.sha256 and SHA256SUMS). The 6 unsure rows are held in held.jsonl and are NOT scored.
+Never scored before: 0 of the 34 sheet ids / content sha256 appear in v6's recorded predictions (docs/router/runs/v6/sealed/).
+  v6 is NOT re-scored on v5_retick, v8_retick, cr, thin_c or thin_d (already scored once in PR #61).
+Isolation: router.isolation rejected 0 rows of v6 train (1712) / val (900) at 3f72300 and 0 of every pool file at 92f8f0a; box full-text checks
+  (sha, first-300, 12-gram, source host) 0 flagged (data/eval/router_unseen/v9_web_f_addendum/isolation.json).
+Input text: router.content.content_text(candidate) on the internal candidate rows (text field = the same text the sheet excerpt was cut from;
+  pdftotext / OCR, first 6000 chars); each candidate sha256 == sealed file_sha256. Dry check: 34/34 join, 0 empty.
+System prompt: prompt_for(labels) sha256 b1ac9472... == the prompt v6 trained with (driver refuses otherwise).
+Sampling: max_tokens 32, temperature 0, top_p 1, seed 0, enable_thinking false (router.train_router._complete).
+Parser: router.train_router._as_label (v9 exact aliases), unchanged. Gate: router.sealed_gate.evaluate_sealed_gate_v8 (gate v2 + MIN_SEALED_PER_LABEL=12), unchanged.
+Name-blind (phase 2, only after the score is written): scripts/router/name_blind.py at 92f8f0a, sha256 a235de3c... (PR #50 party-only blanker).
+  Unblanked side = the stored phase-1 predictions (not re-sampled). Dry count of rows with a blanked field: 23/34.
+  A flip on a passable class (gold n>=12 in that view) is a FAIL.
+Combined view (no sampling): combine_v6_web_f.py concatenates v6's already-recorded per-row predictions (docs/router/runs/v6/sealed/
+  sealed_predictions.jsonl and name_blind_predictions.jsonl: v5_retick, v8_retick, cr, thin_c, thin_d = 278 rows) with the 34 new web_f
+  predictions in config order (312 rows) and runs the same gate / flip table on it.
+Resume rule: if calls fail mid-run, a re-run samples only rows missing from the partial file and logs it. A finished phase refuses a second run.
+Driver: score_v6_web_f.py sha256 9863e94424eaa1312f10f28da535fa6237756f3cdb8daef52e9aec9233571eb4. Nothing is selected or changed on sealed results.

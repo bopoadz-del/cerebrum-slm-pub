@@ -1,0 +1,750 @@
+{
+  "source": {
+    "title": "Hydraulic Design of Highway Culverts, Hydraulic Design Series Number 5, Third Edition (April 2012)",
+    "publication": "FHWA-HIF-12-026",
+    "url": "https://www.fhwa.dot.gov/engineering/hydraulics/pubs/12026/hif12026.pdf",
+    "section": "LIST OF SYMBOLS",
+    "pdf_sha256": "0444c21f401925bc1e7e5d57c11053b7311f903df9bb3c7d451f90a0d1770058",
+    "pdf_pages": [
+      19,
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "extracted_by": "scripts/eval/extract_symbol_table.py",
+  "count": 146,
+  "symbols": [
+    {
+      "symbol": "a",
+      "definition": "Cross-sectional area of orifice, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "a’",
+      "definition": "Constant in rainfall intensity formula",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "A",
+      "definition": "Full cross-sectional area of culvert barrel or channel, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Ab",
+      "definition": "Area of bend section of slope-tapered inlet, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Af",
+      "definition": "Area of inlet face section of tapered inlet, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "AP",
+      "definition": "Area of flow prism, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "At",
+      "definition": "Area of tapered inlet throat section, ft2 (m2)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Aw",
+      "definition": "Watershed area, acres (hectares)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "b",
+      "definition": "Face dimension of side bevel, in (mm)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "b’",
+      "definition": "Constant in rainfall intensity formula",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "B",
+      "definition": "Span of culvert barrel, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Bb",
+      "definition": "Width of bend section of a slope-tapered inlet, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Bf",
+      "definition": "Width of face section of a tapered inlet, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "c",
+      "definition": "Coefficient for submerged inlet control equation",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "C",
+      "definition": "Runoff coefficient for use in the Rational equation",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Cb",
+      "definition": "Discharge coefficient for bend section control",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Cd",
+      "definition": "Coefficient of discharge for flow over an embankment",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Cf",
+      "definition": "Discharge coefficient for face section control",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Cr",
+      "definition": "Free flow coefficient of discharge for flow over an embankment",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Ct",
+      "definition": "Discharge coefficient for throat section control",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "CMP",
+      "definition": "Corrugated metal pipe",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "d",
+      "definition": "Face dimension of top bevel, in (mm)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "dc",
+      "definition": "Critical depth, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "dn",
+      "definition": "Normal depth, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "D",
+      "definition": "Interior height of culvert barrel, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "D50",
+      "definition": "Size of streambed material which exceeds 50% of the material by weight; i.e., the median size, in or ft (mm or m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "E",
+      "definition": "Height of face of tapered inlet, excluding bevel, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "ELC",
+      "definition": "Elevation of weir crest, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "ELf",
+      "definition": "Invert elevation at face, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "Elha",
+      "definition": "Allowable headwater elevation, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "ELhc",
+      "definition": "Headwater elevation required for flow to pass crest in crest control, ft (m)",
+      "pdf_page": 19
+    },
+    {
+      "symbol": "ELhf",
+      "definition": "Headwater elevation required for flow to pass face section in face control, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELhi",
+      "definition": "Headwater elevation required for culvert to pass flow in inlet control, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELho",
+      "definition": "Headwater elevation required for culvert to pass flow in outlet control, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELht",
+      "definition": "Headwater elevation required for flow to pass throat section in throat control, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELo",
+      "definition": "Invert elevation at outlet, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELsf",
+      "definition": "Stream bed elevation at face of culvert, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELso",
+      "definition": "Stream bed elevation at outlet of culvert, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELt",
+      "definition": "Invert elevation at throat, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ELtw",
+      "definition": "Tailwater elevation, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "f",
+      "definition": "Darcy resistance factor",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Fr",
+      "definition": "Froude number",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "G",
+      "definition": "The number of different materials (roughnesses) in the perimeter of a conduit with composite roughness",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "g",
+      "definition": "Acceleration due to gravity, 32.2 ft/s/s (9.81 m/s/s)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "HGL",
+      "definition": "Hydraulic grade line",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "h",
+      "definition": "Height of hydraulic grade line above centerline of orifice, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "hf",
+      "definition": "Friction head loss, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ho",
+      "definition": "Height of hydraulic grade line above outlet invert, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "ht",
+      "definition": "Height of tailwater above crown of submerged road, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "H",
+      "definition": "Sum of inlet loss, friction loss, and velocity head in a culvert, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "HL",
+      "definition": "Total energy required to pass a given discharge through a culvert, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Hb",
+      "definition": "Head loss at bend, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "HC",
+      "definition": "Specific head at critical depth (dC + VC 2/2g), ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "He",
+      "definition": "Entrance head loss, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Hf",
+      "definition": "Friction head loss in culvert barrel, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "H9",
+      "definition": "Head loss at bar grate, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Hj",
+      "definition": "Head loss at junction, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Hl",
+      "definition": "Friction head loss in tapered inlet, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Ho",
+      "definition": "Exit head loss, ft (m)",
+      "pdf_page": 20
+    },
+    {
+      "symbol": "Hv",
+      "definition": "Velocity head = V2/2g, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HW",
+      "definition": "Depth from inlet invert to upstream total energy grade line, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWa",
+      "definition": "Allowable headwater depth, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWb",
+      "definition": "Headwater depth above the bend section invert, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWc",
+      "definition": "Headwater depth above the weir crest, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWd",
+      "definition": "Design headwater depth, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWi",
+      "definition": "Headwater depth above inlet control section invert, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWf",
+      "definition": "Headwater depth above the culvert inlet face invert, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWo",
+      "definition": "Headwater depth above the culvert outlet invert, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWr",
+      "definition": "Total head of flow over embankment, ft (m) (Measured from roadway crest to up stream surface level.)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "HWt",
+      "definition": "Depth from throat invert to upstream total energy grade line, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "I",
+      "definition": "Rate of inflow into a storage basin, ft3/s (m3/s) Rainfall intensity, in/hr",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "k",
+      "definition": "Flow constant for an orifice, Q = kah0.5, ft0.5/s (m0.5/s)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "ke",
+      "definition": "Entrance loss coefficient",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "kt",
+      "definition": "Correction factor for downstream submergence during roadway overtopping",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "K",
+      "definition": "Coefficient for unsubmerged inlet control equation",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "Kb",
+      "definition": "Dimensionless effective pressure term for bend section control",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "Kf",
+      "definition": "Dimensionless effective pressure term for inlet face section control",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "K9",
+      "definition": "Dimensionless bar shape factor for calculating grate head losses",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "Kt",
+      "definition": "Dimensionless effective pressure term for inlet throat control",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "L",
+      "definition": "Actual culvert length, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "La",
+      "definition": "Approximate length of culvert, including tapered inlet, but excluding wing walls, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "Lr",
+      "definition": "Width of roadway prism crest, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "L1",
+      "definition": "Dimensions relating to tapered inlets, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "L2",
+      "definition": "Dimensions relating to tapered inlets, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "L3",
+      "definition": "Dimensions relating to tapered inlets, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "L4",
+      "definition": "Dimensions relating to tapered inlets, ft (m)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "M",
+      "definition": "Exponent in unsubmerged inlet control equation",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "n",
+      "definition": "Manning’s roughness coefficient",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "nc",
+      "definition": "Composite or weighted Manning’s n value",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "N",
+      "definition": "Number of barrels",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "O",
+      "definition": "Rate of outflow from a storage basin, ft3/s (m3/s)",
+      "pdf_page": 21
+    },
+    {
+      "symbol": "p",
+      "definition": "Wetted perimeter, ft (m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "pf",
+      "definition": "Wetted perimeter of tapered inlet face, ft (m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "pt",
+      "definition": "Wetted perimeter of tapered inlet throat, ft (m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "P",
+      "definition": "Length from crest of depression to face of culvert, ft (m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "q0",
+      "definition": "Discharge over segment of embankment, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Q",
+      "definition": "Discharge, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qb",
+      "definition": "Flow through culvert barrel(s) as opposed to flow over embankment, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qc",
+      "definition": "Discharge at critical depth, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qd",
+      "definition": "Design discharge, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qo",
+      "definition": "Overtopping discharge over total length of embankment, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "QP",
+      "definition": "Peak flow rate, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qr",
+      "definition": "Routed (reduced) peak flow, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Qt",
+      "definition": "Total of Qb + Qo, ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Q50",
+      "definition": "Discharge for 50-year return period (similar for other return periods), ft3/s (m3/s)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "R",
+      "definition": "Hydraulic radius = cross-sectional area of flow through culvert or channel divided by wetter perimeter, ft (m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "RCB",
+      "definition": "Reinforced concrete box",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "RCP",
+      "definition": "Reinforced concrete pipe",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "s",
+      "definition": "Storage in a storage basin, ft3 (m3)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "S",
+      "definition": "Slope of culvert barrel, ft/ft (m/m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Se",
+      "definition": "Slope of embankment or face of excavation, expressed as Se:1, horizontal:vertical, ft/ft (m/m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "SD",
+      "definition": "Slope of throat depression at culvert inlet, expressed as SD:1, horizontal:vertical, ft/ft, (m/m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "Sf",
+      "definition": "Friction slope of full flow HGL, ft/ft (m/m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "So",
+      "definition": "Slope of channel bed, ft/ft (m/m)",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "t",
+      "definition": "Time, min or sec",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "ti",
+      "definition": "Time of concentration for Rational equation, min",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "tp",
+      "definition": "Time to peak of a runoff hydrograph, min or sec",
+      "pdf_page": 22
+    },
+    {
+      "symbol": "T",
+      "definition": "Depression of inlet control section below the stream bed, measured from stream bed to face invert for culvert, to throat invert for culvert with tapered inlet, ft (m) Rainfall duration, min",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Tc",
+      "definition": "Critical storm duration, min",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "TP",
+      "definition": "Top width of flow prism, m (ft)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "TAPER",
+      "definition": "Cotangent of angle of sidewalls in tapered inlet with respect to an extension of the culvert sidewalls, ft/ft (m/m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "TW",
+      "definition": "Tailwater depth measured from culvert outlet invert, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "V",
+      "definition": "Mean velocity of flow, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Vc",
+      "definition": "Velocity at critical depth, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Vd",
+      "definition": "Channel velocity downstream of culvert, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "V9",
+      "definition": "Velocity of flow between bars in a grate, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Vo",
+      "definition": "Velocity at outlet of culvert, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "VU",
+      "definition": "Approach velocity upstream of culvert, ft/s (m/s)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "w",
+      "definition": "Maximum cross-sectional width of the bars facing the flow, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "W",
+      "definition": "Length of weir crest for slope tapered inlet with mitered face, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "WP",
+      "definition": "Length of weir crest of fall, excluding sides of depression, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "WW",
+      "definition": "Wingwall of culvert entrance",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "x",
+      "definition": "Minimum clear spacing between bars, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "X1",
+      "definition": "Lengths of overflow sections along embankment, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "X2",
+      "definition": "Lengths of overflow sections along embankment, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "X3",
+      "definition": "Lengths of overflow sections along embankment, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "y",
+      "definition": "Depth of flow, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "y'",
+      "definition": "Change in hydraulic grade line through a junction, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Y",
+      "definition": "Additive term in submerged inlet control equation",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Yh",
+      "definition": "Hydraulic depth = AP/TP, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Z",
+      "definition": "The difference in elevation between the crest and face section of a slope tapered inlet with a mitered face, ft (m)",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Θg",
+      "definition": "Angle of bar grate with respect to the horizontal, degrees",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Θs",
+      "definition": "Flare angles of side walls of tapered inlet with respect to extension of culvert side wall, degrees",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Θt",
+      "definition": "Angle of departure of the top slab from a plane parallel to the bottom slab, degrees",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "ΘW",
+      "definition": "Flare angle of wingwalls with respect to extension of culvert side wall, degrees",
+      "pdf_page": 23
+    },
+    {
+      "symbol": "Θj",
+      "definition": "Angle between outfall and lateral at a junction, degrees",
+      "pdf_page": 23
+    }
+  ]
+}

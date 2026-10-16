@@ -1,0 +1,17 @@
+{
+  "checkpoint": "tinker://d33e27e4-5533-5af4-9039-c9bf8254d4b7:train:0/sampler_weights/posture-qwen3-8b-lora-r16-epoch2",
+  "fork_context": false,
+  "model_id": "Qwen/Qwen3-8B",
+  "schema": "held_out_shard_scores/v1",
+  "shards": {
+    "governance_fresh_9": {
+      "fact_leak_leaked": 0,
+      "formula_routing_passed": 9,
+      "n": 9,
+      "original": false,
+      "refusal_or_qualification_passed": 8,
+      "shard_sha256": "c4b9d9ff4f4cc2c3f6d98c551ab0b9b1b9766d812c28c564003508419d61e830"
+    }
+  },
+  "system_prompt": "prompt_only"
+}

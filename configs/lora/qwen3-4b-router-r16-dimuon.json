@@ -1,0 +1,30 @@
+{
+  "base_model": "Qwen/Qwen3-4B",
+  "train_file": "data/router/train.jsonl",
+  "val_file": "data/router/val.jsonl",
+  "chat_template": "qwen3",
+  "enable_thinking": false,
+  "loss_fn": "cross_entropy",
+  "loss_on": "assistant_turns_only",
+  "rank": 16,
+  "alpha": 16,
+  "target_modules": {
+    "mlp": true,
+    "attn": true,
+    "unembed": false
+  },
+  "learning_rate": 0.007095,
+  "optimizer": "dimuon",
+  "beta1": 0.9,
+  "beta2": 0.95,
+  "eps": 1e-12,
+  "weight_decay": 0.0,
+  "grad_clip_norm": 1.0,
+  "epochs": 2,
+  "batch_size": 16,
+  "max_sequence_length": 3072,
+  "seed": 0,
+  "checkpoint_name": "router-v7-dimuon-qwen3.5-4b-lora-r16",
+  "teacher_model": "Qwen/Qwen3-8B",
+  "target_format": "router_label_v1"
+}

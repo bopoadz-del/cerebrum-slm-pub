@@ -1,0 +1,107 @@
+{
+  "by_destination": {
+    "dropped": 132,
+    "held_out": 65,
+    "regression": 61,
+    "retrieval": 329,
+    "train": 209
+  },
+  "by_member": {
+    "concrete/concrete_adversarial.jsonl": {
+      "regression": 12
+    },
+    "concrete/concrete_pairs.jsonl": {
+      "held_out": 4,
+      "train": 24
+    },
+    "datacenter/datacenter_cases.jsonl": {
+      "regression": 8
+    },
+    "facilities/unroutable.jsonl": {
+      "regression": 1
+    },
+    "formulas/formula_selection.jsonl": {
+      "dropped": 132,
+      "train": 4
+    },
+    "formulas/from-source/formula_selection.jsonl": {
+      "held_out": 20,
+      "retrieval": 5,
+      "train": 107
+    },
+    "governance/governance.jsonl": {
+      "held_out": 27
+    },
+    "governance/governance_blind.jsonl": {
+      "regression": 6
+    },
+    "mech-water/mech_water_epc.jsonl": {
+      "held_out": 4,
+      "train": 22
+    },
+    "mech-water/mech_water_epc_adversarial.jsonl": {
+      "regression": 10
+    },
+    "plant/plant_fleet_adversarial.jsonl": {
+      "regression": 14
+    },
+    "plant/plant_fleet_maintenance.jsonl": {
+      "held_out": 5,
+      "train": 28
+    },
+    "practice/clauses.jsonl": {
+      "retrieval": 8
+    },
+    "rates/diriyah-gate-phase-ii-2023.jsonl": {
+      "retrieval": 73
+    },
+    "rates/doha-2024.jsonl": {
+      "retrieval": 7
+    },
+    "rates/dubai-2024.jsonl": {
+      "retrieval": 7
+    },
+    "rates/rate_handling.jsonl": {
+      "held_out": 1,
+      "train": 3
+    },
+    "rates/riyadh-2024.jsonl": {
+      "retrieval": 7
+    },
+    "rates/saudi-arabia-2024.jsonl": {
+      "retrieval": 87
+    },
+    "rates/saudi-arabia-2025.jsonl": {
+      "retrieval": 135
+    },
+    "site/site_adversarial.jsonl": {
+      "regression": 10
+    },
+    "site/site_pairs.jsonl": {
+      "held_out": 4,
+      "train": 21
+    }
+  },
+  "dropped_reasons": {
+    "exact duplicate": 38,
+    "same formula_id, pair_type and question": 94
+  },
+  "files_non_jsonl": 76,
+  "lines": 796,
+  "non_raw_rows": {
+    "held_out": {
+      "data/sources/temporary-works/temporary_works_pairs.jsonl": 4
+    },
+    "train": {
+      "data/sources/temporary-works/temporary_works_pairs.jsonl": 24,
+      "hard_negative": 25,
+      "paraphrase": 699
+    }
+  },
+  "split_counts": {
+    "held_out": 65,
+    "regression": 61,
+    "retrieval_fact": 5,
+    "train": 209
+  }
+}

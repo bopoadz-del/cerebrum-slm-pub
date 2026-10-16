@@ -1,0 +1,31 @@
+PRE_RUN_NOTE - router v6 training (class-weighted loss, epoch choice on val macro recall)
+Written 2026-10-07T23:02:20+0400 (Asia/Dubai), BEFORE training starts. No sealed set is read or scored in this phase.
+
+Owner order 2026-10-07 22:20 +04, next step (owner message 22:58 +04). Main: 3f72300806cf43eb7efcfd1bd9093d0eaccd4dcb.
+  PR #51 (thin-v9b VO/CO vs change-request pairs + claim rows) merged as 3f72300 on top of #49 (67ff5a2) and #50 (db107de).
+  The local copy was rebuilt and every blob checked against the GitHub tree (357 blobs). 440 tests passed, gates green.
+  The driver re-checks every blob before it starts.
+
+Mechanism: configs/router/train_v6.json (PR #45), entry point router.train_router.fit_router_v6, unchanged.
+  Qwen/Qwen3.5-4B LoRA r16, alpha 16, lr 4.73e-4, batch 16, seed 0, max_sequence_length 6656, enable_thinking false,
+  cross_entropy on the assistant label tokens only. Checkpoint name router-v6-qwen3.5-4b-lora-r16.
+  Class weights: router.balance.class_weights over the train label counts only (inverse frequency, cap 5.0, mean weight
+  over train rows 1.0). Nothing names a label, project, document or row.
+  Selection: val_macro_recall_present_classes (router.balance.macro_recall_present) after each epoch; early stop with
+  patience 1; at most 3 epochs; router.balance.select_epoch, a tie keeps the earlier epoch. Accuracy is written as a report
+  number only and is never read for selection. The epoch is fixed in epoch_choice.json before any sealed score.
+  Note on wording: the owner message says "val macro recall over passable classes"; the merged mechanism (#45) computes it over
+  the classes present in val, and that merged metric is what runs here (the config loader refuses any other metric).
+Driver change (only one): router.train_router.predict_labels is swapped for a parallel version with the same SamplingParams
+  (max_tokens 32, temperature 0, top_p 1, seed 0), _complete and _as_label, which also writes val_predictions_epochN.jsonl.
+
+Data (as merged, rebuilt with train_router.training_examples and checked equal row by row):
+  train 1712, val 900. System prompt = prompt_for(labels), sha256 b1ac9472... (includes the #49 design rule).
+  Train counts: drawing 400, other 300, contract 134, report 123, correspondence 80, BOQ 75, specification 66, meeting minutes 58,
+  schedule 50, VO/CO 49, inspection request 48, site instruction 48, change request 45, register/log 43, RFI 37,
+  payment application 37, submittal 31, method statement 27, claim 19, NCR 18, payment certificate 12, transmittal 12.
+  Class weights (from those counts): drawing 0.199, other 0.265, contract 0.593, report 0.646, ..., VO/CO 1.622,
+  change request 1.766, claim 4.183, NCR 4.415, transmittal 5.106 (capped), payment certificate 5.106 (capped).
+Preflight: train max 6511 tokens, 0 rows over 6656; val prompt max 6490, 0 over.
+Sealed sets, the name-blind dumps and the not-yet-sealed thin-class candidates are never read here. Training runs once.
+Driver: train_v6.py sha256 74963011a848c9a0d18bf43a750a10ec01dfa3b47b81f35315281e36d82caeda, common.py sha256 ffb4ba89bc6b32498fca78bdd0a10dba0c897e916f599791eb152054ce5e699c.

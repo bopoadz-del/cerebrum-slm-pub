@@ -1,0 +1,23 @@
+{
+  "run": "v6",
+  "status": "mechanism only; v6 is not trained until the new train rows merge",
+  "lora_config": "configs/lora/qwen3-4b-router-r16.json",
+  "overrides": {
+    "base_model": "Qwen/Qwen3.5-4B",
+    "max_sequence_length": 6656,
+    "epochs": 3,
+    "checkpoint_name": "router-v6-qwen3.5-4b-lora-r16"
+  },
+  "class_weighting": {
+    "method": "inverse_frequency_loss_weight",
+    "cap": 5.0,
+    "normalise": "mean weight over training rows = 1.0",
+    "source": "label counts of the training rows only"
+  },
+  "selection": {
+    "metric": "val_macro_recall_present_classes",
+    "early_stop_patience": 1,
+    "tie": "earlier epoch"
+  },
+  "doc": "docs/router/V6_TRAINING.md"
+}

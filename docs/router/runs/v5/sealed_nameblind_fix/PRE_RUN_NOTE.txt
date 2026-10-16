@@ -1,0 +1,20 @@
+PRE_RUN_NOTE - name-blind CHECK FIX re-run, router v5 epoch 1 (NOT a re-score)
+Written 2026-10-07T22:27:39+0400 (Asia/Dubai), before the re-run.
+
+Owner order 2026-10-07 22:20 +04 (B). The dump of every flipped row (v5_retick S5-021, S5-023; v8_retick V8-029, V8-040, V8-113;
+the combined correspondence flips are S5-021 and S5-023) showed OVER-BLANKING. In flattened PDF text the old blanker's
+80-character window ran past the party value into table headers and BOQ line items (V8-040), the next field labels
+(S5-021, V8-029), the salutation and body sentences (S5-023), and a document title and distribution table header (V8-113).
+scripts/router/name_blind.py is fixed to blank the party value only, using generic layout rules by position and case,
+with no names (sha256 a235de3cbe5246b8cddc783bdfd0cc5d4ef6dae6dca6b04317de79b6e403e73c; old ddab8598...bdeabf).
+
+What re-runs: only the blanked side. It re-classifies all 263 rows (v5_retick 64, v8_retick 185, cr_addendum 14) with the
+fixed blanker, using the same adapter, prompt (system sha256 4bb6ee17...dac56b, verified against the stored sealed score),
+sampling (temperature 0, max_tokens 32, seed 0) and parser.
+What does not re-run: the unblanked side. It is the stored sealed_predictions.jsonl from the one sealed score (PR #47).
+No sealed score, macro, accuracy, gate_v2 or router_passed is recomputed or replaced.
+Flip = stored unblanked prediction != fixed-blanker prediction. Gate unchanged: a flip on a passable class (n>=12) fails.
+Rows where the fixed blanker blanks nothing are reported separately (expected 0 flips at temperature 0).
+Base: main 64b1df9 plus only scripts/router/name_blind.py and tests/router/test_name_blind.py; the driver checks every other blob.
+Adapter: tinker://4ec9bca9-f838-5d1a-ad89-7157820a3f09:train:0/sampler_weights/router-v5-qwen3.5-4b-lora-r16-epoch1.
+Driver: nameblind_fix_v5e1.py, sha256 7ab848e44058cd3d0832b7d58487aaa7a190bcc2065837d3c9637e129058f05e. It refuses a second run.

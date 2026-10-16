@@ -1,0 +1,51 @@
+{
+  "version": "v7",
+  "doc": "docs/router/V7_TRAINING.md",
+  "label_set": "configs/router/label_set_v9.json",
+  "selection_seed": 0,
+  "content_gate": "collect.content_gate.gate (>= 200 chars and a filled field); every pair row must pass it",
+  "per_class_budget": "median of the per-class row counts of data/router/train.jsonl (computed, not stored here)",
+  "contrastive": {
+    "source": "labels named, by label name or by an unambiguous regional name, in each v9 definition's Is-not line; edges are made symmetric",
+    "menu": "two labels: the row's own label and one neighbour; system prompt = router.teacher_label.prompt_for(menu)",
+    "assignment": "each class's eligible rows are ordered by sha256(seed|label|doc_id); the first min(eligible, budget) rows each get one neighbour, round-robin over the class's neighbours in label-set order",
+    "edges_governed_elsewhere": "the edge between the two labels of combined_form.labels is built only by the combined-form rule"
+  },
+  "combined_form": {
+    "labels": {
+      "application": "payment application",
+      "certificate": "payment certificate"
+    },
+    "source": "LABEL_SET_v9 combined-form notes: certifier section blank or not signed -> application; completed and signed with a certified amount -> certificate",
+    "owner_rule": "certified amount present AND certifier signature/date present -> payment certificate; certifier block blank -> payment application",
+    "certified_cue": "certified",
+    "certifier_cues": [
+      "certif",
+      "engineer",
+      "architect",
+      "QS",
+      "employer's representative"
+    ],
+    "signature_cues": [
+      "sign",
+      "date"
+    ],
+    "window_chars": 160,
+    "value_window_chars": 60,
+    "family": "project_id",
+    "pairing": "one application-side and one certificate-side document from the same family make a pair; unmatched documents make no pair"
+  },
+  "catch_all": {
+    "labels": [
+      "correspondence",
+      "other",
+      "report",
+      "register/log"
+    ],
+    "source": "owner task 2026-10-08 20:09 +04, step 1d",
+    "instrument_labels": "every label in configs/router/labels.json that is not a catch-all label",
+    "instrument_test": "the label name or one of its unambiguous regional names occurs in the first head_chars characters of the text",
+    "head_chars": 300,
+    "menu": "the row's own catch-all label plus every instrument label; system prompt = router.teacher_label.prompt_for(menu)"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "n": 60,
+  "per_label": 5,
+  "agreement_threshold": 0.8,
+  "majority_class_fail": true,
+  "labels_file": "configs/router/labels.json",
+  "sealed_dir": "data/eval/router_unseen",
+  "sealed_labels": "data/eval/router_unseen/sealed_labels.jsonl",
+  "agreement_file": "data/eval/router_unseen/agreement.json",
+  "sha256sums": "data/eval/router_unseen/SHA256SUMS",
+  "sealed_gate": {
+    "version": 2,
+    "applies_to": "future_fresh_sealed_set",
+    "sealed_scoring": false,
+    "doc": "docs/router/SEALED_GATE.md",
+    "metric": "macro_recall",
+    "comparison": "strictly_greater_than_every_constant_single_label_predictor",
+    "constant_predictors_fail_majority_gate": true,
+    "training_majority": "drawing",
+    "sealed_set_majority": "report",
+    "majority_class_fail": true,
+    "val_gate_unchanged": true
+  },
+  "sealed_scored": true,
+  "sealed_gate_result": "sealed gate: FAIL (gate defect: condition (b) unsatisfiable as written); router NOT marked passed",
+  "teacher": {
+    "provider": "tinker",
+    "model": "Qwen/Qwen3-8B",
+    "temperature": 0,
+    "confidence_floor": 0.7
+  },
+  "note": "Sealed documents come from Master Folder (or another corpus not yet used as training labels) and are labelled by a practitioner.",
+  "v9_sealed": {
+    "labels_file": "configs/router/labels.json",
+    "label_set": "configs/router/label_set_v9.json",
+    "sets": [
+      {
+        "name": "v5_retick",
+        "sealed_labels": "data/eval/router_unseen/v9_retick/v5/sealed_labels.jsonl",
+        "rows": 64
+      },
+      {
+        "name": "v8_retick",
+        "sealed_labels": "data/eval/router_unseen/v9_retick/v8/sealed_labels.jsonl",
+        "rows": 185
+      },
+      {
+        "name": "cr_addendum",
+        "sealed_labels": "data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl",
+        "rows": 14,
+        "addendum": true
+      },
+      {
+        "name": "thin_c_addendum",
+        "sealed_labels": "data/eval/router_unseen/v9_thin_c_addendum/sealed_labels.jsonl",
+        "rows": 2,
+        "addendum": true
+      },
+      {
+        "name": "thin_d_addendum",
+        "sealed_labels": "data/eval/router_unseen/v9_thin_d_addendum/sealed_labels.jsonl",
+        "rows": 13,
+        "addendum": true
+      },
+      {
+        "name": "web_f_addendum",
+        "sealed_labels": "data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl",
+        "rows": 34,
+        "addendum": true
+      },
+      {
+        "name": "web_g_addendum",
+        "sealed_labels": "data/eval/router_unseen/v9_web_g_addendum/sealed_labels.jsonl",
+        "rows": 7,
+        "addendum": true
+      }
+    ],
+    "combined": {
+      "rule": "concatenation of the sets in this order; nothing swapped; per-label n counts rows of every set",
+      "rows": 319,
+      "per_label_n": {
+        "RFI": 12,
+        "submittal": 18,
+        "transmittal": 13,
+        "VO/CO": 16,
+        "change request": 14,
+        "claim": 10,
+        "payment application": 10,
+        "payment certificate": 15,
+        "drawing": 18,
+        "specification": 18,
+        "schedule": 19,
+        "report": 23,
+        "correspondence": 19,
+        "BOQ": 12,
+        "contract": 12,
+        "method statement": 14,
+        "meeting minutes": 14,
+        "NCR": 12,
+        "inspection request": 3,
+        "site instruction": 11,
+        "register/log": 15,
+        "other": 21
+      }
+    },
+    "min_sealed_per_label": 12,
+    "gate": "router.sealed_gate.evaluate_sealed_gate_v8 (gate v2 + MIN_SEALED_PER_LABEL), unchanged",
+    "score_once_per_adapter": true,
+    "addendum_note": "The change-request addendum adds 14 owner-ticked rows as a new sealed file. With it, change request has 14 sealed rows in the combined v9 set (passable at n >= 12). Scored alone the addendum is single-label, so its own gate_v2 is degenerate; the gate is read on the combined set.",
+    "cap_exhaustion": "data/router/sealed_cap_exhaustion.json"
+  },
+  "path_resolution": {
+    "sealed_root_env": "SLM_SEALED_DIR",
+    "private_root_env": "SLM_PRIVATE_DATA_DIR",
+    "alias_env": "SLM_PRIVATE_ROOT",
+    "note": "Relative sealed_* paths are suffixes joined under the env root. Loaders fail closed if unset and the file is absent from the tree."
+  }
+}

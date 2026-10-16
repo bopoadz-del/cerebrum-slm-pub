@@ -1,0 +1,90 @@
+name: zero-shot baseline (Workers AI)
+
+# Evaluation only; nothing here feeds training. Commits nothing. Sealed document text
+# and page images are built in runner temp and never uploaded; the artifact holds
+# per-row predictions (ids, gold, pred, usage, cost) and tables only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "clef-flash, clef, or all"
+        default: "all"
+        type: choice
+        options: [all, clef-flash, clef]
+      mode:
+        description: "text, image, or all"
+        default: "all"
+        type: choice
+        options: [all, text, image]
+      blind:
+        description: "no, yes (name-blind), or both"
+        default: "both"
+        type: choice
+        options: [both, "no", "yes"]
+      resume_run_id:
+        description: "optional earlier run id whose zero-shot artifact is resumed"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: zero-shot-baseline
+  cancel-in-progress: false
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      PYTHONPATH: scripts
+      CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+    steps:
+      - name: Check secrets
+        id: secrets
+        run: |
+          if [ -z "$CF_ACCOUNT_ID" ] || [ -z "$CF_API_TOKEN" ]; then
+            echo "zero-shot run parked: CF_ACCOUNT_ID / CF_API_TOKEN not set"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        if: steps.secrets.outputs.ok == 'true'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        if: steps.secrets.outputs.ok == 'true'
+        with:
+          python-version: "3.12"
+      - name: Install poppler
+        if: steps.secrets.outputs.ok == 'true'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: Resume earlier predictions
+        if: steps.secrets.outputs.ok == 'true' && inputs.resume_run_id != ''
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: zero-shot-predictions
+          path: out
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+      - name: Build rows (runner temp only)
+        if: steps.secrets.outputs.ok == 'true'
+        run: python scripts/router/score_zero_shot.py rows --work "$RUNNER_TEMP/zs"
+      - name: Score
+        if: steps.secrets.outputs.ok == 'true'
+        run: |
+          mkdir -p out
+          python scripts/router/score_zero_shot.py run --rows "$RUNNER_TEMP/zs/rows.jsonl" --out-dir out \
+            --model "${{ inputs.model }}" --mode "${{ inputs.mode }}" --blind "${{ inputs.blind }}"
+      - name: Tables
+        if: always() && steps.secrets.outputs.ok == 'true'
+        run: python scripts/router/score_zero_shot.py report --out-dir out
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always() && steps.secrets.outputs.ok == 'true'
+        with:
+          name: zero-shot-predictions
+          path: out/
+          if-no-files-found: ignore

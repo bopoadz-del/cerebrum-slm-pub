@@ -1,0 +1,17 @@
+{
+  "labels": [
+    "RFI",
+    "submittal",
+    "transmittal",
+    "VO/CO",
+    "claim",
+    "payment certificate",
+    "drawing",
+    "spec",
+    "schedule",
+    "report",
+    "correspondence",
+    "other"
+  ],
+  "task": "document_type"
+}

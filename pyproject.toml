@@ -1,0 +1,14 @@
+[project]
+name = "cerebrum-slm"
+version = "0.0.1"
+description = "Construction posture model. Facts stay in retrieval on The Fork; weights learn refusal, qualification, and routing."
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.5"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+cache_dir = "/tmp/pytest-cerebrum-slm"

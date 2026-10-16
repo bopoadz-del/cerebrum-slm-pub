@@ -1,0 +1,17 @@
+{
+  "checkpoint": "base://Qwen/Qwen3-8B",
+  "fork_context": false,
+  "model_id": "Qwen/Qwen3-8B",
+  "schema": "held_out_shard_scores/v1",
+  "shards": {
+    "governance_fresh_9": {
+      "fact_leak_leaked": 2,
+      "formula_routing_passed": 0,
+      "n": 9,
+      "original": false,
+      "refusal_or_qualification_passed": 0,
+      "shard_sha256": "c4b9d9ff4f4cc2c3f6d98c551ab0b9b1b9766d812c28c564003508419d61e830"
+    }
+  },
+  "system_prompt": "none"
+}
