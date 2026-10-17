@@ -3,6 +3,7 @@
 Every pair is generated from the v9 definitions file and the merged training rows. The committed pair files must equal a
 regeneration, every pair must point at a training row with the same label, and nothing may overlap a sealed set.
 """
+import pytest
 
 import hashlib
 import inspect
@@ -45,6 +46,13 @@ def _refs(root: Path) -> dict[str, list[dict]]:
     return {key: load_rows(root / rel) for key, rel in PAIR_FILES.items()}
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7/pairs_contrastive.jsonl',
+    'data/router/v7/pairs_combined_form.jsonl',
+    'data/router/v7/pairs_catch_all.jsonl',
+    'data/router/v7/pairs_summary.json',
+)
 def test_committed_pair_files_equal_a_regeneration(repo_root: Path) -> None:
     pairs, summary = generate(repo_root)
     assert _refs(repo_root) == json.loads(json.dumps(pairs))
@@ -52,6 +60,7 @@ def test_committed_pair_files_equal_a_regeneration(repo_root: Path) -> None:
     assert v7_pairs.main(["--root", str(repo_root), "--check"]) == 0
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_no_label_project_or_document_string_in_the_generator(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")
     source = inspect.getsource(v7_pairs)
@@ -72,6 +81,7 @@ def test_definitions_are_the_v9_file_verbatim(repo_root: Path) -> None:
         assert f"Definition: {item['definition']}" in md, item["label"]
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_neighbours_are_named_in_an_is_not_line_and_symmetric(repo_root: Path) -> None:
     _, label_set, labels, _ = _setup(repo_root)
     neighbours = is_not_neighbours(label_set)
@@ -97,6 +107,13 @@ def test_neighbours_follow_the_definitions_not_the_names() -> None:
     assert two == {"qq": ["rr"], "rr": ["qq", "ss"], "ss": ["rr"]}
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+    'data/router/v7/pairs_contrastive.jsonl',
+    'data/router/v7/pairs_combined_form.jsonl',
+    'data/router/v7/pairs_catch_all.jsonl',
+)
 def test_every_pair_points_at_a_training_row_with_its_label(repo_root: Path) -> None:
     rules, label_set, labels, train = _setup(repo_root)
     by_id = {row["doc_id"]: row for row in train}
@@ -115,6 +132,10 @@ def test_every_pair_points_at_a_training_row_with_its_label(repo_root: Path) -> 
         assert item["messages"][1]["content"] == by_id[item["doc_id"]]["messages"][1]["content"]
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7/pairs_contrastive.jsonl',
+)
 def test_contrastive_rows_respect_the_budget_and_the_combined_form_edge(repo_root: Path) -> None:
     rules, label_set, _, train = _setup(repo_root)
     budget = class_budget(train)
@@ -145,6 +166,7 @@ def test_field_state_reads_content_only() -> None:
     assert field_state(zero, rules)["certified_amount"] is False
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_combined_form_pairs_need_both_sides_in_one_family(repo_root: Path) -> None:
     rules, label_set, labels, _ = _setup(repo_root)
     app, cert = rules["combined_form"]["labels"]["application"], rules["combined_form"]["labels"]["certificate"]
@@ -163,6 +185,10 @@ def test_combined_form_pairs_need_both_sides_in_one_family(repo_root: Path) -> N
     assert len({r["pair_id"] for r in combined}) == 1
 
 
+@pytest.mark.private_data(
+    'data/router/v7/pairs_summary.json',
+    'data/router/v7/pairs_combined_form.jsonl',
+)
 def test_combined_form_counts_are_reported(repo_root: Path) -> None:
     summary = json.loads((repo_root / SUMMARY_FILE).read_text(encoding="utf-8"))["combined_form"]
     assert set(summary["qualifying"]) == {"application", "certificate"}
@@ -170,6 +196,7 @@ def test_combined_form_counts_are_reported(repo_root: Path) -> None:
     assert summary["rows"] == 2 * sum(f["pairs"] for f in summary["families_with_both_sides"])
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_combined_form_cues_come_from_the_definitions(repo_root: Path) -> None:
     rules, label_set, _, _ = _setup(repo_root)
     cf = rules["combined_form"]
@@ -181,6 +208,10 @@ def test_combined_form_cues_come_from_the_definitions(repo_root: Path) -> None:
         assert cue.casefold() in text, cue
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7/pairs_catch_all.jsonl',
+)
 def test_catch_all_rows_fail_every_instrument_test(repo_root: Path) -> None:
     rules, label_set, labels, train = _setup(repo_root)
     ca = rules["catch_all"]
@@ -203,6 +234,11 @@ def _grams(text: str, n: int = 12) -> set[str]:
     return {" ".join(words[i : i + n]) for i in range(len(words) - n + 1)}
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+)
 def test_v7_examples_never_overlap_any_sealed_set(repo_root: Path) -> None:
     examples, refs = v7_training_examples(repo_root)
     assert len(examples) == len(load_rows(repo_root / "data" / "router" / "train.jsonl")) + len(refs)
@@ -227,6 +263,10 @@ def test_v7_examples_never_overlap_any_sealed_set(repo_root: Path) -> None:
         assert not (_grams(text) & grams)
 
 
+@pytest.mark.private_data(
+    'data/router/v7/isolation.json',
+    'data/router/train.jsonl',
+)
 def test_box_isolation_report_is_clean(repo_root: Path) -> None:
     report = json.loads((repo_root / "data" / "router" / "v7" / "isolation.json").read_text(encoding="utf-8"))
     assert report["v7_examples"] == len(v7_training_examples(repo_root)[0])

@@ -65,6 +65,11 @@ def _entry(name, rel, path, count, original, schema):
     }
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_real_shard_list_names_the_original_and_the_added_shards():
     shards = load_shards()
     original = original_shard(shards)
@@ -74,11 +79,21 @@ def test_real_shard_list_names_the_original_and_the_added_shards():
     assert len(added_shards(shards)) >= 1
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_original_shard_labels_are_the_held_out_labels():
     shards = load_shards()
     assert label_shard(None, original_shard(shards)) == dict(label_eval_sets())["held_out"]
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_every_added_shard_labels_with_the_pair_type_rule():
     from eval.labels import label_held_out_record
 
@@ -190,6 +205,11 @@ def test_shard_run_refuses_unknown_shards_and_replies_inside_the_repo(tmp_path: 
         )
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_no_shard_name_or_pair_text_in_code():
     root = repo_root()
     shards = load_shards()
@@ -209,6 +229,11 @@ def test_no_shard_name_or_pair_text_in_code():
                     raise AssertionError(f"shard {shard.name} line {line} text is in source")
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_cli_shard_flag_parses(tmp_path: Path, monkeypatch):
     import importlib.util
 

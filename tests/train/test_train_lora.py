@@ -292,6 +292,10 @@ def test_dry_run_prints_counts_and_does_not_train(tmp_path: Path, monkeypatch, c
     assert "tinker: not contacted" in out
 
 
+@pytest.mark.private_data(
+    'data/train/manifest.json',
+    'data/train/pairs.jsonl',
+)
 def test_repo_dry_run_reports_the_train_split(monkeypatch, capsys) -> None:
     monkeypatch.setattr(
         "train.train_lora.run_training",
@@ -470,6 +474,10 @@ def test_render_refuses_a_different_system_prompt_and_a_missing_pair_type() -> N
         render_pairs([blank], EVAL_PROMPT, {})
 
 
+@pytest.mark.private_data(
+    'data/train/manifest.json',
+    'data/train/pairs.jsonl',
+)
 def test_every_committed_train_pair_renders_with_the_eval_prompt() -> None:
     config = load_lora_config(ROOT)
     pairs = prepare_training_pairs(ROOT, config)

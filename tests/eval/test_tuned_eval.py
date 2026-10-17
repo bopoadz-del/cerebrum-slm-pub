@@ -57,6 +57,10 @@ def _plant_routing_registries(root: Path) -> None:
 _RESPONSE = '{"block":"refuse","missing_inputs":[],"formula_id":"","required_inputs":[]}'
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_dry_run_checks_real_data_without_tinker(monkeypatch, capsys):
     monkeypatch.delenv(API_KEY_ENV, raising=False)
     imported = []
@@ -82,6 +86,10 @@ def test_dry_run_checks_real_data_without_tinker(monkeypatch, capsys):
     _assert_no_item_text(text)
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_dry_run_can_stack_the_prompt_only_system_prompt(monkeypatch):
     monkeypatch.delenv(API_KEY_ENV, raising=False)
     text = dry_run_tuned_eval(
@@ -92,6 +100,10 @@ def test_dry_run_can_stack_the_prompt_only_system_prompt(monkeypatch):
     assert "tinker_contacted: no" in text
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_missing_key_blocks_before_sampling(tmp_path: Path, monkeypatch):
     monkeypatch.setenv(API_KEY_ENV, "   ")
     output = tmp_path / "scores.json"
@@ -223,6 +235,10 @@ def test_checkpoint_factory_loads_the_tinker_path_once(monkeypatch):
     }
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_baselines_label_and_still_do_not_sample(monkeypatch):
     seen = {"labels": 0}
 
@@ -243,6 +259,10 @@ def test_baselines_label_and_still_do_not_sample(monkeypatch):
     assert seen["labels"] == 2
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_cli_dry_run_and_missing_key(tmp_path: Path, monkeypatch, capsys):
     monkeypatch.delenv(API_KEY_ENV, raising=False)
     script = _load_script("run_tuned_eval.py")

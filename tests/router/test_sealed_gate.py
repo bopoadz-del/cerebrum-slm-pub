@@ -1,3 +1,4 @@
+import pytest
 import hashlib
 import json
 from pathlib import Path
@@ -104,6 +105,7 @@ def test_a_perfect_single_label_set_does_not_beat_its_constant() -> None:
     assert result["passed"] is False
 
 
+@pytest.mark.private_data('docs/router/runs/v2/sealed/sealed_predictions.jsonl')
 def test_recorded_sealed_score_matches_its_sha256sums(repo_root: Path) -> None:
     directory = repo_root / "docs" / "router" / "runs" / "v2" / "sealed"
     listed = (directory / "SHA256SUMS").read_text(encoding="utf-8").splitlines()
@@ -123,6 +125,7 @@ def test_recorded_sealed_score_matches_its_sha256sums(repo_root: Path) -> None:
     ]
 
 
+@pytest.mark.private_data('docs/router/runs/v2/sealed/sealed_predictions.jsonl')
 def test_v5_change_order_rows_stay_recorded_as_unsure(repo_root: Path) -> None:
     """The spent v5 predictions are not re-parsed under the alias map."""
     path = repo_root / "docs" / "router" / "runs" / "v2" / "sealed" / "sealed_predictions.jsonl"
@@ -218,6 +221,10 @@ def test_v9_gate_requires_twelve_sealed_docs_for_change_request(repo_root: Path)
         assert row["status"] == "not passable"
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_retick/v5/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_retick/v8/sealed_labels.jsonl',
+)
 def test_v9_retick_sets_mark_thin_labels_not_passable(repo_root: Path) -> None:
     """Gold from the re-ticked sealed sets only; predictions are gold, so no score is made."""
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")

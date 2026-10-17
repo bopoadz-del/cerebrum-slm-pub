@@ -139,6 +139,7 @@ def test_messages_schema_checks_each_assistant_turn(tmp_path: Path) -> None:
     assert check_split(tmp_path)
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_archived_posture_passes_and_standard_names_fail(repo_root: Path) -> None:
     terms = load_retrieval_terms(repo_root)
     assert "aecom" in {brand.casefold() for brand in terms.brands}

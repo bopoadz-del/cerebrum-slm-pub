@@ -23,28 +23,21 @@ jobs:
       - name: Run gates
         env:
           PYTHONPATH: scripts
-        run: python -m gates.run
+        run: |
+          set -o pipefail
+          python -m gates.run | tee "$RUNNER_TEMP/gates.txt"
       - name: Validate collection provenance
         env:
           PYTHONPATH: scripts
         run: |
-          args=(
-            data/router/additions_thin_v9.jsonl
-            data/router/additions_thin_v9b.jsonl
-            data/router/additions_thin_v9c.jsonl
-            data/router/additions_thin_v9f.jsonl
-            data/router/additions_thin_d.jsonl
-            data/router/additions_change_request_v9.jsonl
-          )
-          # Owner additions are not in the tree. Pass external paths with
-          # SLM_OWNER_ADDITIONS (space-separated). A missing path fails the check.
-          if [ -n "${SLM_OWNER_ADDITIONS:-}" ]; then
-            # shellcheck disable=SC2206
-            extra=(${SLM_OWNER_ADDITIONS})
-            args+=("${extra[@]}")
-          fi
-          python -m router.collection_provenance "${args[@]}"
+          set -o pipefail
+          python -m router.collection_provenance --discover | tee "$RUNNER_TEMP/provenance.txt"
       - name: Run tests
         env:
           PYTHONPATH: scripts
-        run: python -m pytest tests
+        run: python -m pytest tests -rs --junitxml="$RUNNER_TEMP/pytest.xml"
+      - name: Record public counts
+        if: always()
+        env:
+          PYTHONPATH: scripts
+        run: python -m ci.public_summary --gates "$RUNNER_TEMP/gates.txt" --provenance "$RUNNER_TEMP/provenance.txt" --junit "$RUNNER_TEMP/pytest.xml"

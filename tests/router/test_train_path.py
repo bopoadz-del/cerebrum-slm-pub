@@ -45,6 +45,7 @@ def test_prepare_pool_refuses_a_sealed_sha() -> None:
         prepare_pool(rows, Exclusions(frozenset({"abc"}), frozenset()))
 
 
+@pytest.mark.private_data('data/raw/router/labels.jsonl')
 def test_raw_pool_prep_counts_and_no_sealed_overlap(repo_root: Path) -> None:
     report = pool_report(repo_root)
     assert report == {
@@ -91,6 +92,7 @@ def test_owner_override_does_not_change_the_agreement_gate(repo_root: Path) -> N
     assert override["owner_clock"] == "2026-10-06 07:45"
 
 
+@pytest.mark.private_data('data/router/human_sample_PENDING_OWNER.csv')
 def test_pending_sample_is_a_header_only(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels_v5.json")
     path = repo_root / "data" / "router" / "human_sample_PENDING_OWNER.csv"
@@ -120,6 +122,7 @@ def test_pending_sample_is_a_header_only(repo_root: Path) -> None:
     assert "Qwen/Qwen3-8B" in card
 
 
+@pytest.mark.private_data('data/router/teacher_labels.jsonl')
 def test_pool_write_walls_on_the_missing_key_and_not_on_an_empty_seal(
     capsys: pytest.CaptureFixture[str],
     tmp_path: Path,
@@ -149,6 +152,7 @@ def test_sealed_set_is_not_scored(repo_root: Path) -> None:
     assert main(["--score", str(sealed), "--root", str(repo_root)]) == 2
 
 
+@pytest.mark.private_data('data/eval/router_unseen/sealed_labels.jsonl')
 def test_train_entry_walls_without_labels_and_hides_a_key(
     capsys: pytest.CaptureFixture[str],
     monkeypatch: pytest.MonkeyPatch,
@@ -392,6 +396,7 @@ def test_encode_unwraps_transformers_5_batch_encoding() -> None:
     assert ids == [11, 12, 13]
 
 
+@pytest.mark.private_data('data/raw/router/labels.jsonl')
 def test_split_v2_reproduces_the_landed_rows(repo_root: Path) -> None:
     """Replay the recorded v2 split on the frozen v5 snapshot.
 
@@ -425,6 +430,11 @@ def test_split_v2_reproduces_the_landed_rows(repo_root: Path) -> None:
     ]
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+    'data/router/additions_owner_laptop.jsonl',
+)
 def test_proposed_split_stays_isolated_and_still_rejects_sealed_keys(repo_root: Path) -> None:
     """Live v8 rows must not overlap sealed v5 or v8, and those keys still refuse."""
     from router.isolation import load_exclusions, require_isolated

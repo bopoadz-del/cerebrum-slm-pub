@@ -6,7 +6,8 @@ import re
 import zipfile
 from pathlib import Path
 
-from gates.findings import Finding
+from gates.absent import classify_absent
+from gates.findings import Finding, NotRun
 from gates.records import RAW_ZIP, sha256_file
 from private_data import locate
 
@@ -26,15 +27,16 @@ def parse_manifest(text: str) -> dict[str, str]:
     return listed
 
 
-def check_raw(root: Path) -> list[Finding]:
-    findings: list[Finding] = []
+def check_raw(root: Path) -> list[Finding | NotRun]:
+    findings: list[Finding | NotRun] = []
     zip_path = locate(root, RAW_ZIP.as_posix(), "SLM_DATASETS_ZIP")
     manifest_path = root / MANIFEST
     if not manifest_path.is_file():
         findings.append(
             Finding("raw", MANIFEST.as_posix(), "sha256 manifest is missing")
         )
-        # Public tree: zip lives outside the repo (SLM_DATASETS_ZIP). Skip when absent.
+        if not zip_path.is_file():
+            findings.append(classify_absent(root, "raw", RAW_ZIP.as_posix(), "SLM_DATASETS_ZIP"))
         return findings
 
     try:
@@ -57,8 +59,7 @@ def check_raw(root: Path) -> list[Finding]:
         return findings
 
     if not zip_path.is_file():
-        # Public tree intentionally omits the archive; CI has no private secrets.
-        # When SLM_DATASETS_ZIP (or SLM_PRIVATE_DATA_DIR) is set, the zip is checked.
+        findings.append(classify_absent(root, "raw", RAW_ZIP.as_posix(), "SLM_DATASETS_ZIP"))
         return findings
 
     actual = sha256_file(zip_path)

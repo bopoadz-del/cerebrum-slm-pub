@@ -86,6 +86,10 @@ def test_committed_config_keeps_the_v6_recipe_and_points_to_the_data_file(repo_r
     assert v7["config"]["class_weighting"]["weights_file"] == WEIGHTS_FILE
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7/class_weights.json',
+)
 def test_committed_weights_file_is_the_recomputation_from_the_v7_examples(repo_root: Path) -> None:
     examples, _ = v7_training_examples(repo_root)
     labels = [row["messages"][-1]["content"] for row in examples]
