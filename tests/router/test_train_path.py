@@ -109,7 +109,7 @@ def test_pending_sample_is_a_header_only(repo_root: Path) -> None:
     assert recorded["human_agreement"]["overall"] == 0.875
     assert recorded["human_agreement"]["kappa"] == 0.864
     assert override["recorded_at"] == "2026-10-06T03:45:00Z"
-    assert override["owner_order"].startswith("CHADi: Go. Training proceeds before")
+    assert override["owner_order"].startswith("the owner: Go. Training proceeds before")
     assert "done" in note
     assert "0.875" in note
     assert "0.864" in note

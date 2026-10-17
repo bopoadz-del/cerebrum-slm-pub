@@ -1,6 +1,6 @@
 # Router label set v9 (approved)
 
-Status: APPROVED by the owner (CHADi Mahmoud), 2026-10-07 16:20 +04, with three additions.
+Status: APPROVED by the owner (the owner Mahmoud), 2026-10-07 16:20 +04, with three additions.
 Source: Google Doc "Router labels v9 - APPROVED (owner additions 2026-10-07)"
 (file id 1TG0QDUUqXEncOZ2mxJ8Wqb5R_DSTOIcIt6wROkCUTDM). Supersedes v8 (`configs/router/label_set_v8.json`, kept for replay).
 

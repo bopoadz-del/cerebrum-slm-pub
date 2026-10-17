@@ -3,7 +3,7 @@
   "source_doc": "Router labels v9 - APPROVED (owner additions 2026-10-07)",
   "source_doc_id": "1TG0QDUUqXEncOZ2mxJ8Wqb5R_DSTOIcIt6wROkCUTDM",
   "status": "approved",
-  "approved_by": "owner (CHADi Mahmoud)",
+  "approved_by": "owner (the owner Mahmoud)",
   "approved_at": "2026-10-07T16:20:00+04:00",
   "design_rules": [
     "A label is decided from document content only. Filename, folder, source site and form number never decide a label.",
