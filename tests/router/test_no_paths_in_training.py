@@ -27,12 +27,13 @@ TRAINING_FILES = (
 )
 
 
-@pytest.mark.parametrize("relpath", TRAINING_FILES)
+@pytest.mark.parametrize(
+    "relpath",
+    [pytest.param(path, marks=[pytest.mark.private_data(path)]) for path in TRAINING_FILES],
+)
 def test_committed_training_rows_hold_no_path(repo_root: Path, relpath: str) -> None:
     from private_data import locate
-    from private_paths import skip_if_missing
 
-    skip_if_missing(repo_root, relpath)
     path = locate(repo_root, relpath)
     bad = [
         index
@@ -42,11 +43,10 @@ def test_committed_training_rows_hold_no_path(repo_root: Path, relpath: str) -> 
     assert bad == [], f"{relpath}: {len(bad)} rows match a path pattern, first lines {bad[:5]}"
 
 
+@pytest.mark.private_data("data/raw/router/labels.jsonl")
 def test_raw_pool_excerpts_hold_no_path(repo_root: Path) -> None:
     from private_data import locate
-    from private_paths import skip_if_missing
 
-    skip_if_missing(repo_root, "data/raw/router/labels.jsonl")
     path = locate(repo_root, "data/raw/router/labels.jsonl")
     bad = 0
     for line in path.read_text(encoding="utf-8").splitlines():

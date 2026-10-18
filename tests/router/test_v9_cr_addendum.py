@@ -2,6 +2,7 @@
 
 No score is made here. Gold is compared with itself only to read the per-label n rule.
 """
+import pytest
 
 import hashlib
 import json
@@ -35,6 +36,12 @@ def _addendum(repo_root: Path) -> Path:
     return path
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_addendum_seal_matches_its_file(repo_root: Path) -> None:
     base = repo_root / ADDENDUM_DIR
     sums = []
@@ -47,6 +54,12 @@ def test_addendum_seal_matches_its_file(repo_root: Path) -> None:
     assert (base / "SHA256SUMS").read_text(encoding="utf-8") == "".join(sums)
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_addendum_rows_are_owner_ticks_on_preregistered_candidates(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")
     rows = _rows(_addendum(repo_root))
@@ -60,6 +73,12 @@ def test_addendum_rows_are_owner_ticks_on_preregistered_candidates(repo_root: Pa
     assert {row["sheet_id"] for row in rows} == {item["id"] for item in candidates}
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_addendum_swaps_nothing_in_other_sealed_sets(repo_root: Path) -> None:
     addendum = _addendum(repo_root)
     shas = {row["file_sha256"] for row in _rows(addendum)}
@@ -72,6 +91,10 @@ def test_addendum_swaps_nothing_in_other_sealed_sets(repo_root: Path) -> None:
         assert (path.parent / "sealed_labels.jsonl.sha256").read_text(encoding="utf-8") == f"{digest}  sealed_labels.jsonl\n"
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_every_sealed_set_is_isolated_from_training_pools(repo_root: Path) -> None:
     """Generic: every sealed file under router_unseen against train, val and every pool file."""
     base = repo_root / "data" / "eval" / "router_unseen"
@@ -84,6 +107,12 @@ def test_every_sealed_set_is_isolated_from_training_pools(repo_root: Path) -> No
             assert not rejected_rows(rows, exclusions), (sealed, name)
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_v9_config_lists_the_sets_and_counts_match_the_files(repo_root: Path) -> None:
     v9 = _v9(repo_root)
     labels = load_labels(repo_root / v9["labels_file"])
@@ -98,6 +127,12 @@ def test_v9_config_lists_the_sets_and_counts_match_the_files(repo_root: Path) ->
     assert v9["score_once_per_adapter"] is True
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_addendum_makes_its_label_passable_in_the_combined_set(repo_root: Path) -> None:
     v9 = _v9(repo_root)
     labels = load_labels(repo_root / v9["labels_file"])

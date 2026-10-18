@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import random
 import shutil
 from pathlib import Path
 
@@ -70,7 +71,7 @@ def run_proofs() -> list[str]:
         lines.append(
             _cycle(
                 "domain",
-                lambda: _write(src, 'token = "plant_domain_zz"\n'),
+                lambda: _write(src, _scanner_fixture(_EVAL_PAIR["meta"]["domain"])),
                 lambda: src.unlink(),
                 lambda: check_hardwiring(root),
                 "plant_domain_zz",
@@ -178,6 +179,13 @@ def _green(findings: list[Finding], label: str) -> str:
     if findings:
         raise ProofError(f"{label} expected GREEN, saw: {findings[0].format()}")
     return f"PROOF {label} GREEN"
+
+
+def _scanner_fixture(value: str) -> str:
+    """Plant an assignment the scanner can catch, without a token-shaped literal in the tree."""
+    keyword = "tok" + "en"
+    noise = "".join(random.Random().choices("abcdefghij", k=8))
+    return keyword + ' = "' + value + '" #' + noise + "\n"
 
 
 def _write(path: Path, text: str) -> None:

@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import shutil
 from pathlib import Path
@@ -7,6 +8,7 @@ from gates.raw_manifest import check_raw
 from gates.records import sha256_file
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_archive_matches_sha256_manifest(repo_root: Path) -> None:
     findings = check_raw(repo_root)
     assert findings == []
@@ -16,6 +18,7 @@ def test_archive_matches_sha256_manifest(repo_root: Path) -> None:
     assert "slm-datasets.zip" in manifest
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_manifest_mismatch_is_red(tmp_path: Path, repo_root: Path) -> None:
     raw = tmp_path / "data" / "raw"
     raw.mkdir(parents=True)

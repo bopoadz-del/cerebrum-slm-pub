@@ -1,6 +1,6 @@
 # Router label set v8 (approved)
 
-Status: APPROVED by the owner (CHADi Mahmoud), 2026-10-07 01:18 +04.
+Status: APPROVED by the owner, 2026-10-07 01:18 +04.
 Source: Google Doc "Router label set v7 rev2 — owner edits applied (approve)"
 (file id 13gyr_cLGROoYpa2by0cwSkc-znlBzQ_O09-pae7x9Hs). The owner calls the
 resulting sealed set / labelling sheet "v8".

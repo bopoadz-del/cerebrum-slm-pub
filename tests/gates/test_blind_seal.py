@@ -102,6 +102,7 @@ def test_sha256_sidecar_must_match_and_a_readme_is_not_sealed(tmp_path: Path) ->
         training_open(payload, tmp_path)
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_seal_json_matches_then_count_hash_and_source_zip_fail(
     tmp_path: Path, repo_root: Path
 ) -> None:

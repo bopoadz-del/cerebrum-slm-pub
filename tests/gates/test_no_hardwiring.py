@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import json
 import shutil
@@ -29,6 +30,7 @@ def _first_jsonl(repo_root: Path, suffix: str) -> dict:
     return json.loads(line)
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_catalog_seals_eval_and_leaves_posture_unsealed(repo_root: Path) -> None:
     catalog = build_catalog(repo_root)
     probes = {probe.casefold() for probe in catalog.probe_ids}
@@ -62,6 +64,7 @@ def test_catalog_seals_eval_and_leaves_posture_unsealed(repo_root: Path) -> None
     assert len(catalog.content_hashes) == 74
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_real_probe_and_domain_red_then_removed(tmp_path: Path, repo_root: Path) -> None:
     _copy_zip(tmp_path, repo_root)
     cheat = tmp_path / "src" / "cheat.py"
@@ -73,6 +76,7 @@ def test_real_probe_and_domain_red_then_removed(tmp_path: Path, repo_root: Path)
     assert check_hardwiring(tmp_path) == []
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_real_eval_pair_in_training_red_then_removed(tmp_path: Path, repo_root: Path) -> None:
     _copy_zip(tmp_path, repo_root)
     adversarial = _first_jsonl(repo_root, "concrete/concrete_adversarial.jsonl")
@@ -197,6 +201,7 @@ def test_word_list_in_python_json_and_yaml_then_removed(tmp_path: Path) -> None:
     assert check_hardwiring(tmp_path) == []
 
 
+@pytest.mark.private_data('data/raw/slm-datasets.zip')
 def test_training_domain_words_and_a_different_case_stay_green(tmp_path: Path, repo_root: Path) -> None:
     _copy_zip(tmp_path, repo_root)
     note = tmp_path / "src" / "note.py"

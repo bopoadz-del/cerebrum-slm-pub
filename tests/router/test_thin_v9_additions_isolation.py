@@ -3,6 +3,7 @@
 Isolation against every sealed set (v5, v8, v9 re-tick, v9 CR addendum), against the thin-class sealed
 candidates awaiting owner ticks, and against the CR sealed candidates. Zero sealed overlap in train and val.
 """
+import pytest
 
 import hashlib
 import json
@@ -51,6 +52,7 @@ def _sha(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9.jsonl')
 def test_thin_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}
@@ -64,6 +66,13 @@ def test_thin_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
         assert row["excerpt"][:300] not in first300, row["doc_id"]
 
 
+@pytest.mark.private_data(
+    'data/router/thin_v9_sealed_candidates_isolation.json',
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_thin_rows_are_isolated_from_sealed_and_pending_sources(repo_root: Path) -> None:
     rows = _rows(repo_root, THIN)
     pending = _pending(repo_root, THIN_SEALED) + _pending(repo_root, CR_SEALED)
@@ -79,6 +88,7 @@ def test_thin_rows_are_isolated_from_sealed_and_pending_sources(repo_root: Path)
         assert "source_url" not in row and "source_domain" not in row
 
 
+@pytest.mark.private_data('data/router/thin_v9_sealed_candidates_isolation.json')
 def test_thin_pending_candidates_share_no_source_with_any_train_batch(repo_root: Path) -> None:
     pending = _pending(repo_root, THIN_SEALED)
     pending_domains = {c["source_domain_sha256"] for c in pending}
@@ -88,6 +98,7 @@ def test_thin_pending_candidates_share_no_source_with_any_train_batch(repo_root:
     assert all(set(c) == {"id", "file_sha256", "text_sha256", "source_domain_sha256"} for c in pending)
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9.jsonl')
 def test_thin_rows_meet_the_floor_with_v9_labels(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs/router/labels.json")
     floor = confidence_floor(load_sealed_config(repo_root / "configs/router/sealed_eval.json"))
@@ -100,6 +111,13 @@ def test_thin_rows_meet_the_floor_with_v9_labels(repo_root: Path) -> None:
     assert len({r["doc_id"] for r in rows}) == len(rows)
 
 
+@pytest.mark.private_data(
+    'data/router/thin_v9_sealed_candidates_isolation.json',
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_train_and_val_hold_zero_sealed_or_pending_rows(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}
@@ -112,6 +130,11 @@ def test_train_and_val_hold_zero_sealed_or_pending_rows(repo_root: Path) -> None
             assert sha not in pending_shas and row.get("doc_id") not in pending_shas
 
 
+@pytest.mark.private_data(
+    'data/router/additions_thin_v9.jsonl',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_thin_sources_never_span_train_and_val(repo_root: Path) -> None:
     source = {r["doc_id"]: r["source_domain_sha256"] for r in _rows(repo_root, CR) + _rows(repo_root, THIN)}
     train = _rows(repo_root, "data/router/train.jsonl")

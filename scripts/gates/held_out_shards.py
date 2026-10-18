@@ -28,8 +28,9 @@ import re
 import sys
 from pathlib import Path
 
+from gates.absent import classify_absent
 from gates.augment import OVERLAP_LIMIT, jaccard, pair_content_hash, sealed_users, token_set
-from gates.findings import Finding
+from gates.findings import Finding, NotRun
 from gates.records import RecordParseError, iter_training_files, load_records, pair_view, relpath
 from private_data import locate, missing_message
 
@@ -160,11 +161,10 @@ def _train_side(root: Path, shard_paths: set[str]) -> list[tuple[str, int, str, 
     return found
 
 
-def check_held_out_shards(root: Path) -> list[Finding]:
+def check_held_out_shards(root: Path) -> list[Finding | NotRun]:
     held_dir = locate(root, HELD_DIR.as_posix(), "SLM_HELD_OUT_DIR")
     if not held_dir.is_dir():
-        # Public tree: held-out lives under SLM_HELD_OUT_DIR / SLM_SEALED_DIR. Skip when absent.
-        return []
+        return [classify_absent(root, "held-out-shards", HELD_DIR.as_posix(), "SLM_HELD_OUT_DIR")]
     if not locate(root, SHARDS.as_posix(), "SLM_HELD_OUT_SHARDS").is_file():
         if any(held_dir.glob("*.jsonl")):
             return [
@@ -174,7 +174,7 @@ def check_held_out_shards(root: Path) -> list[Finding]:
                     "held-out shard list is missing. " + missing_message(SHARDS.as_posix(), "SLM_HELD_OUT_SHARDS"),
                 )
             ]
-        return []
+        return [classify_absent(root, "held-out-shards", SHARDS.as_posix(), "SLM_HELD_OUT_SHARDS")]
     shards, rows, findings = shard_rows(root)
     if not shards:
         return findings
