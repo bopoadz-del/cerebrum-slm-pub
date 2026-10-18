@@ -3,7 +3,7 @@
   "source_doc": "Router label set v7 rev2 — owner edits applied (approve)",
   "source_doc_id": "13gyr_cLGROoYpa2by0cwSkc-znlBzQ_O09-pae7x9Hs",
   "status": "approved",
-  "approved_by": "owner (the owner Mahmoud)",
+  "approved_by": "owner",
   "approved_at": "2026-10-07T01:18:00+04:00",
   "design_rules": [
     "A label is decided from document content only. Filename, folder, source site and form number never decide a label.",
