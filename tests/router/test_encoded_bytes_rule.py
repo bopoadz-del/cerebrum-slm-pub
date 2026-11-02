@@ -1,4 +1,5 @@
 """Encoded-bytes content rule: text that is mostly encoded bytes has no content."""
+import pytest
 
 import base64
 import json
@@ -53,6 +54,10 @@ def test_builder_drops_encoded_rows_only() -> None:
     assert [e["doc_id"] for e in examples] == ["b"]
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_committed_train_and_val_hold_no_encoded_rows(repo_root: Path) -> None:
     for split in ("train", "val"):
         path = repo_root / "data" / "router" / f"{split}.jsonl"

@@ -1,6 +1,7 @@
 """The v9 directs/asks-or-prices rule is one design-rule line; nothing else in the prompt changed."""
 
 from __future__ import annotations
+import pytest
 
 import copy
 import hashlib
@@ -45,6 +46,10 @@ def test_nothing_else_in_the_prompt_changed(repo_root: Path) -> None:
     assert prompt_for(labels, label_set=data) == without
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_train_and_val_rows_change_only_the_system_message(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")
     prompt = prompt_for(labels)

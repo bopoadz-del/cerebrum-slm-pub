@@ -1,6 +1,7 @@
 """Every raw line lands in exactly one destination, and the committed table is current."""
 
 from __future__ import annotations
+import pytest
 
 import importlib.util
 import json
@@ -22,6 +23,10 @@ def _load():
 reconcile_raw = _load()
 
 
+@pytest.mark.private_data(
+    'data/raw/slm-datasets.zip',
+    'data/held_out/pairs.jsonl',
+)
 def test_every_line_has_one_destination_and_dropped_rows_have_a_reason():
     rows, summary = reconcile_raw.reconcile(ROOT)
     lines = [row for row in rows if row["kind"] != "file"]
@@ -32,6 +37,10 @@ def test_every_line_has_one_destination_and_dropped_rows_have_a_reason():
     assert max(refs.values()) == 1
 
 
+@pytest.mark.private_data(
+    'data/raw/slm-datasets.zip',
+    'data/held_out/pairs.jsonl',
+)
 def test_split_files_are_fully_accounted_for():
     rows, summary = reconcile_raw.reconcile(ROOT)
     pairs = [row for row in rows if row["kind"] == "pair"]
@@ -42,10 +51,18 @@ def test_split_files_are_fully_accounted_for():
     assert len(facts) == summary["split_counts"]["retrieval_fact"]
 
 
+@pytest.mark.private_data(
+    'data/raw/slm-datasets.zip',
+    'data/held_out/pairs.jsonl',
+)
 def test_committed_table_is_current():
     assert reconcile_raw.main(["--root", str(ROOT), "--check"]) == 0
 
 
+@pytest.mark.private_data(
+    'data/raw/slm-datasets.zip',
+    'data/held_out/pairs.jsonl',
+)
 def test_table_carries_no_item_text():
     table = (ROOT / reconcile_raw.OUT / "raw_lines.jsonl").read_text(encoding="utf-8")
     for line in table.splitlines():

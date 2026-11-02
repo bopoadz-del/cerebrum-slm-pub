@@ -1,6 +1,7 @@
 """Held-out shards gate: frozen, sealed, listed, and never in train (every shard)."""
 
 from __future__ import annotations
+import pytest
 
 import hashlib
 import json
@@ -151,6 +152,11 @@ def test_gate_runs_in_the_ci_entrypoint(tmp_path: Path) -> None:
     assert any(f.gate == "held-out-shards" for f in evaluate(root))
 
 
+@pytest.mark.private_data(
+    'data/held_out/shards.json',
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_real_repo_shards_are_green_and_match_freeze(repo_root: Path) -> None:
     assert check_held_out_shards(repo_root) == []
     listed = json.loads((repo_root / SHARDS).read_text(encoding="utf-8"))["shards"]

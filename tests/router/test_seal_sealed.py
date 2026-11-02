@@ -214,6 +214,7 @@ def test_xlsx_without_a_label_sheet_keeps_the_header_wall(tmp_path: Path, repo_r
     assert not (out / "sealed_labels.jsonl").exists()
 
 
+@pytest.mark.private_data('data/eval/router_unseen/sealed_labels.jsonl')
 def test_committed_v5_seal(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels_v5.json")
     directory = repo_root / "data" / "eval" / "router_unseen"

@@ -4,6 +4,7 @@ Isolation against EVERY sealed set under data/eval/router_unseen (found by glob,
 without editing this file) and against the pending sealed candidates kept in the repo; collection provenance;
 split placement.
 """
+import pytest
 
 import hashlib
 import json
@@ -52,6 +53,13 @@ def _sha(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+    'data/router/thin_v9_sealed_candidates_isolation.json',
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+)
 def test_v9f_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     assert len(sealed) > 0
@@ -69,6 +77,7 @@ def test_v9f_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
         assert urlparse(row["source_url"]).netloc.lower() not in domains, row["doc_id"]
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9f.jsonl')
 def test_v9f_rows_are_isolated_from_pending_sources(repo_root: Path) -> None:
     pending = _pending(repo_root)
     pending_domains = {c["source_domain_sha256"] for c in pending}
@@ -79,6 +88,7 @@ def test_v9f_rows_are_isolated_from_pending_sources(repo_root: Path) -> None:
         assert row["source_domain_sha256"] == _sha(urlparse(row["source_url"]).netloc)
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9f.jsonl')
 def test_v9f_rows_meet_the_floor_with_v9_labels_provenance_and_are_new(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs/router/labels.json")
     floor = confidence_floor(load_sealed_config(repo_root / "configs/router/sealed_eval.json"))
@@ -94,6 +104,11 @@ def test_v9f_rows_meet_the_floor_with_v9_labels_provenance_and_are_new(repo_root
     assert not {r["doc_id"] for r in rows} & earlier
 
 
+@pytest.mark.private_data(
+    'data/router/additions_thin_v9f.jsonl',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_v9f_rows_are_placed_once_and_sources_never_span(repo_root: Path) -> None:
     train = _rows(repo_root, "data/router/train.jsonl")
     val = _rows(repo_root, "data/router/val.jsonl")
@@ -112,6 +127,11 @@ def test_v9f_rows_are_placed_once_and_sources_never_span(repo_root: Path) -> Non
     assert counts["rows_in_train"] + counts["rows_in_val"] == len(rows)
 
 
+@pytest.mark.private_data(
+    'data/router/additions_thin_v9f.jsonl',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_train_and_val_hold_zero_sealed_rows(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}

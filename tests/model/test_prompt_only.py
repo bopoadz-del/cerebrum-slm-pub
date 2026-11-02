@@ -1,3 +1,4 @@
+import pytest
 from eval.baselines.blocked import BaselineNotRun
 from eval.baselines.prompt_only import load_system_prompt, run_prompt_only_baseline
 from eval.baselines.untuned import run_untuned_baseline
@@ -22,6 +23,10 @@ def test_system_prompt_states_the_four_rules_and_uses_the_fork():
     assert "TINKER_API_KEY=" not in prompt
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_baselines_are_not_run():
     try:
         run_prompt_only_baseline()

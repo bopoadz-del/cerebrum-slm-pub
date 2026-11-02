@@ -1,6 +1,7 @@
 """Invariants for the Split. Domain names live in data files, not in this module."""
 
 from __future__ import annotations
+import pytest
 
 import hashlib
 import importlib.util
@@ -206,10 +207,15 @@ class SyntheticSplitTests(unittest.TestCase):
 
 
 class CorpusTests(unittest.TestCase):
+    @pytest.mark.private_data(
+        'data/held_out/shards.json',
+        'data/held_out/pairs.jsonl',
+        'data/held_out/manifest.json',
+        'data/retrieval/rates/rates.jsonl',
+        'data/retrieval/facilities/records.jsonl',
+    )
     def test_committed_split(self) -> None:
         train_path = ROOT / "data/train/pairs.jsonl"
-        if not train_path.exists():
-            self.skipTest("split output is not in the tree")
         train = _read_jsonl(train_path)
         held = _read_jsonl(ROOT / "data/held_out/pairs.jsonl")
         regression = _read_jsonl(ROOT / "data/eval/regression/pairs.jsonl")

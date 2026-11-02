@@ -48,6 +48,7 @@ def _sha(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+@pytest.mark.private_data('data/router/additions_owner_sources_pr2.jsonl')
 def test_pr2_additions_are_the_unmasked_originals(repo_root: Path) -> None:
     rows = _rows(repo_root, PR2)
     assert len(rows) == 219
@@ -58,6 +59,11 @@ def test_pr2_additions_are_the_unmasked_originals(repo_root: Path) -> None:
     assert all(re.fullmatch(r"pr2_p\d{2}", r["project_id"]) for r in rows)
 
 
+@pytest.mark.private_data(
+    'data/router/additions_owner_sources_pr2.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_additions_never_overlap_any_sealed_set(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}
@@ -70,6 +76,12 @@ def test_additions_never_overlap_any_sealed_set(repo_root: Path) -> None:
             assert not (_grams(row["excerpt"]) & grams), (rel, row["doc_id"])
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_change_request_rows_are_isolated_from_sealed_sources(repo_root: Path) -> None:
     rows = _rows(repo_root, CR)
     pending = json.loads((repo_root / CR_SEALED).read_text(encoding="utf-8"))["candidates"]
@@ -84,6 +96,7 @@ def test_change_request_rows_are_isolated_from_sealed_sources(repo_root: Path) -
         assert row.get("provenance_scope") == "internal only"
 
 
+@pytest.mark.private_data('data/router/additions_change_request_v9.jsonl')
 def test_change_request_rows_meet_the_floor_with_v9_labels(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs/router/labels.json")
     floor = confidence_floor(load_sealed_config(repo_root / "configs/router/sealed_eval.json"))
@@ -94,6 +107,12 @@ def test_change_request_rows_meet_the_floor_with_v9_labels(repo_root: Path) -> N
     assert len(projects) >= 12
 
 
+@pytest.mark.private_data(
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_train_and_val_hold_zero_sealed_rows(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}
@@ -106,6 +125,7 @@ def test_train_and_val_hold_zero_sealed_rows(repo_root: Path) -> None:
             assert sha not in pending_shas and row.get("doc_id") not in pending_shas
 
 
+@pytest.mark.private_data('data/router/additions_owner_sources_pr2.jsonl')
 def test_templates_train_only_and_projects_not_split(repo_root: Path) -> None:
     pr2 = _rows(repo_root, PR2)
     cr = _rows(repo_root, CR)

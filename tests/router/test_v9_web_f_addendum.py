@@ -1,5 +1,6 @@
 """The owner-ticked v9 web_f addendum: a new sealed file, held rows recorded and kept out, provenance on every sealed
 row, the per-(project, class) cap, the exhaustion record recomputed from data, and the gap table. No score is made here."""
+import pytest
 
 import hashlib
 import json
@@ -37,6 +38,12 @@ def _registered(root: Path) -> list[dict]:
     return out
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_every_file_in_the_addendum_matches_its_seal(repo_root: Path) -> None:
     base = repo_root / ADDENDUM_DIR
     listed = (base / "SHA256SUMS").read_text(encoding="utf-8").splitlines()
@@ -49,6 +56,12 @@ def test_every_file_in_the_addendum_matches_its_seal(repo_root: Path) -> None:
         assert (base / f"{name}.sha256").read_text(encoding="utf-8") == line + "\n"
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_sealed_rows_are_owner_ticks_with_url_and_sha_provenance(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")
     rows = _rows(repo_root / _mine(repo_root)["sealed_labels"])
@@ -63,6 +76,12 @@ def test_sealed_rows_are_owner_ticks_with_url_and_sha_provenance(repo_root: Path
     assert len({r["file_sha256"] for r in rows}) == len(rows)
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_held_rows_are_recorded_and_never_sealed_or_trained(repo_root: Path) -> None:
     base = repo_root / ADDENDUM_DIR
     held = _rows(base / "held.jsonl")
@@ -79,6 +98,12 @@ def test_held_rows_are_recorded_and_never_sealed_or_trained(repo_root: Path) -> 
             assert not keys & held_shas, path.name
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_candidate_hashes_cover_sealed_and_held_and_stay_out_of_training(repo_root: Path) -> None:
     candidates = json.loads((repo_root / CANDIDATES).read_text(encoding="utf-8"))["candidates"]
     sealed = _rows(repo_root / ADDENDUM_DIR / "sealed_labels.jsonl")
@@ -92,6 +117,12 @@ def test_candidate_hashes_cover_sealed_and_held_and_stay_out_of_training(repo_ro
             assert str(row.get("file_sha256") or "") not in shas and str(row.get("doc_id") or "") not in shas
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_project_cap_holds_for_every_pair_this_addendum_touches(repo_root: Path) -> None:
     mine = _rows(repo_root / ADDENDUM_DIR / "sealed_labels.jsonl")
     combined = pair_counts(_registered(repo_root))
@@ -99,6 +130,12 @@ def test_project_cap_holds_for_every_pair_this_addendum_touches(repo_root: Path)
         assert combined[key] <= 3, key
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_exhaustion_record_is_recomputed_from_data(repo_root: Path) -> None:
     v9 = _v9(repo_root)
     record = json.loads((repo_root / v9["cap_exhaustion"]).read_text(encoding="utf-8"))
@@ -106,6 +143,12 @@ def test_exhaustion_record_is_recomputed_from_data(repo_root: Path) -> None:
     assert record["pairs"] == exhausted_pairs(_registered(repo_root), record["limit"])
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_no_document_of_this_addendum_is_sealed_elsewhere(repo_root: Path) -> None:
     mine = repo_root / ADDENDUM_DIR / "sealed_labels.jsonl"
     shas = {r["file_sha256"] for r in _rows(mine)}
@@ -142,6 +185,12 @@ def _prefix_counts(repo_root: Path, v9: dict, mine: str) -> tuple[Counter, Count
     return before, through
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/v9_web_f_addendum/sealed_labels.jsonl',
+    'data/eval/router_unseen/v9_web_f_addendum/held.jsonl',
+    'data/router/web_f_sealed_candidates_isolation.json',
+    'data/router/sealed_cap_exhaustion.json',
+)
 def test_gap_table_matches_the_registered_sets(repo_root: Path) -> None:
     v9 = _v9(repo_root)
     labels = load_labels(repo_root / v9["labels_file"])

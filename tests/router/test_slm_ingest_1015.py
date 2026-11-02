@@ -4,6 +4,7 @@ Isolation against every sealed set under data/eval/router_unseen (found by glob)
 pending sealed candidates; generic residue checks for contact details and identifiers; neutral source ids and
 hashed project groups; placement once in train, never val; 10% per-class project cap for the added rows.
 """
+import pytest
 
 import hashlib
 import json
@@ -60,6 +61,14 @@ def _label(row: dict) -> str:
     return row["messages"][-1]["content"]
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+    'data/held_out/pairs.jsonl',
+    'data/router/thin_v9_sealed_candidates_isolation.json',
+    'data/router/cr_v9_sealed_candidates_isolation.json',
+    'data/eval/router_unseen/v9_cr_addendum/sealed_labels.jsonl',
+)
 def test_rows_never_overlap_any_sealed_or_held_set(repo_root: Path) -> None:
     sealed = _sealed_and_held(repo_root)
     assert sealed
@@ -76,6 +85,7 @@ def test_rows_never_overlap_any_sealed_or_held_set(repo_root: Path) -> None:
         assert row["excerpt"][:300] not in first300, row["doc_id"]
 
 
+@pytest.mark.private_data('data/router/additions_slm_ingest_1015.jsonl')
 def test_rows_are_isolated_from_pending_sealed_candidates(repo_root: Path) -> None:
     pending: list[dict] = []
     for path in sorted((repo_root / "data" / "router").glob(PENDING_GLOB)):
@@ -91,6 +101,7 @@ def test_rows_are_isolated_from_pending_sealed_candidates(repo_root: Path) -> No
         ]
 
 
+@pytest.mark.private_data('data/router/additions_slm_ingest_1015.jsonl')
 def test_ingest_excerpts_leave_no_written_or_exact_amounts(repo_root: Path) -> None:
     """LANE2: amounts are magnitude tokens, not number-words or exact digit strings."""
     from router.amount_buckets import bucket_amounts
@@ -100,6 +111,7 @@ def test_ingest_excerpts_leave_no_written_or_exact_amounts(repo_root: Path) -> N
         assert replacements == 0 and rewritten == row["excerpt"], row["doc_id"]
 
 
+@pytest.mark.private_data('data/router/additions_slm_ingest_1015.jsonl')
 def test_rows_carry_no_contact_details_or_identifiers(repo_root: Path) -> None:
     residue = (
         re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"),
@@ -128,6 +140,7 @@ def test_rows_carry_no_contact_details_or_identifiers(repo_root: Path) -> None:
         assert "\u2588" in row["excerpt"], row["doc_id"]
 
 
+@pytest.mark.private_data('data/router/additions_slm_ingest_1015.jsonl')
 def test_neutral_ids_hashed_projects_v9_labels_and_floor(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs/router/labels.json")
     floor = confidence_floor(
@@ -162,6 +175,11 @@ def test_neutral_ids_hashed_projects_v9_labels_and_floor(repo_root: Path) -> Non
     assert not {r["doc_id"] for r in rows} & earlier
 
 
+@pytest.mark.private_data(
+    'data/router/additions_slm_ingest_1015.jsonl',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_rows_are_in_train_once_never_val_with_the_same_text_and_label(
     repo_root: Path,
 ) -> None:
@@ -180,6 +198,10 @@ def test_rows_are_in_train_once_never_val_with_the_same_text_and_label(
         assert chat["project_id"] == row["project_id"]
 
 
+@pytest.mark.private_data(
+    'data/router/additions_slm_ingest_1015.jsonl',
+    'data/router/train.jsonl',
+)
 def test_added_rows_respect_the_ten_percent_project_cap(repo_root: Path) -> None:
     train = _rows(repo_root, "data/router/train.jsonl")
     per_label = Counter(_label(r) for r in train)
@@ -202,6 +224,7 @@ def _reject_residue_text(obj: object) -> None:
         assert "\n" not in obj
 
 
+@pytest.mark.private_data('data/router/slm_ingest_1015_box_side_residue.json')
 def test_box_side_residue_table_covers_eleven_rows_without_excerpts(
     repo_root: Path,
 ) -> None:
@@ -254,6 +277,10 @@ def _git_blob(root: Path, rel: str) -> str:
     ).strip()
 
 
+@pytest.mark.private_data(
+    'data/router/slm_ingest_1015_box_side_residue.json',
+    'data/router/additions_slm_ingest_1015.jsonl',
+)
 def test_box_side_amount_rerun_matches_redactor_and_row_sums(
     repo_root: Path,
 ) -> None:
@@ -326,6 +353,11 @@ def test_box_side_amount_rerun_matches_redactor_and_row_sums(
         assert item["source_id"] not in {row["source_id"] for row in rows}
 
 
+@pytest.mark.private_data(
+    'data/router/additions_slm_ingest_1015.jsonl',
+    'data/router/split_counts.json',
+    'data/router/train.jsonl',
+)
 def test_split_counts_record_matches(repo_root: Path) -> None:
     rows = _rows(repo_root, ADDS)
     counts = json.loads(

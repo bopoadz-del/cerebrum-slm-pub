@@ -18,10 +18,25 @@ It never reads document content, filenames or labels.
 """
 from __future__ import annotations
 
+import argparse
+import fnmatch
 import json
+import os
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+
+from private_data import (
+    OffloadManifestError,
+    env_for,
+    is_offloaded,
+    locate,
+    offloaded_paths,
+    private_mode,
+)
+
+ADDITIONS_GLOB = "data/router/additions_*.jsonl"
+OWNER_ADDITIONS_ENV = "SLM_OWNER_ADDITIONS"
 
 REQUIRED_FIELDS: tuple[str, ...] = (
     "source_url",
@@ -123,27 +138,148 @@ def validate_paths(paths: list[Path]) -> list[FileResult]:
     return [validate_file(p) for p in paths]
 
 
-def main(argv: list[str] | None = None) -> int:
-    argv = list(sys.argv[1:] if argv is None else argv)
-    if not argv:
-        print("usage: python -m router.collection_provenance <additions.jsonl> [...]", file=sys.stderr)
-        return 2
-    results = validate_paths([Path(p) for p in argv])
+def _report(res: FileResult, label: str) -> bool:
+    """Print one file result. Return True when the file failed. Never prints row text."""
+    if res.rows == 0 and any(v.missing == ("file is absent",) for v in res.violations):
+        print(
+            f"{label}: private data file is absent. "
+            "Pass an external path. Refusing to continue without the file.",
+            file=sys.stderr,
+        )
+        return True
+    print(f"{label}: {res.rows} rows, {res.legacy_rows} no-provenance")
     failed = False
-    for res in results:
-        if res.rows == 0 and any(v.missing == ("file is absent",) for v in res.violations):
+    for v in res.violations:
+        failed = True
+        print(f"  row {v.row_index}: missing/invalid {', '.join(v.missing)}")
+    return failed
+
+
+def _norm_rel(relative: str) -> str:
+    return relative.replace("\\", "/").lstrip("/")
+
+
+def _matches_additions(relative: str) -> bool:
+    return fnmatch.fnmatch(_norm_rel(relative), ADDITIONS_GLOB)
+
+
+def discover_targets(root: Path) -> tuple[list[str], list[str], list[str]]:
+    """In-tree additions, manifest additions not in the tree, and owner-additions paths.
+
+    Raises ``OffloadManifestError`` when the manifest cannot be read.
+    """
+    tree: list[str] = []
+    router = root / "data" / "router"
+    if router.is_dir():
+        for path in sorted(router.glob("additions_*.jsonl")):
+            if path.is_file():
+                tree.append(path.relative_to(root).as_posix())
+    listed = sorted(rel for rel in offloaded_paths(root) if _matches_additions(rel))
+    manifest = [rel for rel in listed if rel not in set(tree)]
+    owner = [part for part in os.environ.get(OWNER_ADDITIONS_ENV, "").split() if part.strip()]
+    return tree, manifest, owner
+
+
+def _owner_label(index: int, path: str) -> str:
+    if Path(path).is_absolute():
+        return f"{OWNER_ADDITIONS_ENV}#{index}"
+    return path
+
+
+def _run_discover(root: Path) -> tuple[bool, list[str]]:
+    """Return (failed, not-run lines)."""
+    try:
+        tree, manifest, owner = discover_targets(root)
+    except OffloadManifestError as exc:
+        print(str(exc), file=sys.stderr)
+        return True, []
+    failed = False
+    not_run: list[str] = []
+    for rel in tree:
+        if _report(validate_file(root / rel), rel):
+            failed = True
+    for rel in manifest:
+        if not private_mode() and is_offloaded(rel, root):
+            not_run.append(f"NOT-RUN [collection-provenance] {rel} set {env_for(rel)}")
+            continue
+        located = locate(root, rel)
+        if not located.is_file():
             print(
-                f"{res.path}: private data file is absent. "
-                "Pass an external path. Refusing to continue without the file.",
+                f"{rel}: private data file is absent. Set {env_for(rel)}. "
+                "Refusing to continue without the file.",
                 file=sys.stderr,
             )
             failed = True
             continue
-        print(f"{res.path}: {res.rows} rows, {res.legacy_rows} no-provenance")
-        for v in res.violations:
+        if _report(validate_file(located), rel):
             failed = True
-            print(f"  row {v.row_index}: missing/invalid {', '.join(v.missing)}")
-    return 1 if failed else 0
+    for index, path in enumerate(owner, start=1):
+        label = _owner_label(index, path)
+        target = Path(path)
+        if not target.is_file():
+            print(
+                f"{label}: private data file is absent. Set {OWNER_ADDITIONS_ENV}. "
+                "Refusing to continue without the file.",
+                file=sys.stderr,
+            )
+            failed = True
+            continue
+        if _report(validate_file(target), label):
+            failed = True
+    return failed, not_run
+
+
+def _run_explicit(root: Path, paths: list[str]) -> bool:
+    failed = False
+    for raw in paths:
+        rel = _norm_rel(raw)
+        target = Path(raw)
+        if not target.is_file() and not Path(raw).is_absolute():
+            target = root / rel
+        if target.is_file():
+            if _report(validate_file(target), raw):
+                failed = True
+            continue
+        # Absent explicit paths fail. A manifest hit does not turn this into NOT-RUN.
+        print(
+            f"{raw}: private data file is absent. "
+            "Pass an external path. Refusing to continue without the file.",
+            file=sys.stderr,
+        )
+        failed = True
+    return failed
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Validate collection provenance on additions files.")
+    parser.add_argument(
+        "--discover",
+        action="store_true",
+        help="Validate in-tree additions_*.jsonl, manifest matches, and SLM_OWNER_ADDITIONS.",
+    )
+    parser.add_argument("--root", type=Path, default=None)
+    parser.add_argument("paths", nargs="*")
+    args = parser.parse_args(argv)
+    if not args.discover and not args.paths:
+        print(
+            "usage: python -m router.collection_provenance [--discover] [--root DIR] <additions.jsonl> [...]",
+            file=sys.stderr,
+        )
+        return 2
+    root = (args.root or Path.cwd()).resolve()
+    failed = False
+    not_run: list[str] = []
+    if args.discover:
+        failed, not_run = _run_discover(root)
+    if args.paths:
+        failed = _run_explicit(root, list(args.paths)) or failed
+    for line in not_run:
+        print(line)
+    if failed:
+        return 1
+    if args.discover:
+        print(f"provenance: green ({len(not_run)} not run: private data absent)")
+    return 0
 
 
 if __name__ == "__main__":

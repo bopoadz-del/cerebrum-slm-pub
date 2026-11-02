@@ -4,6 +4,7 @@ the v9 teacher, internal only).
 Isolation against every sealed set (v5, v8, v9 re-tick, v9 CR addendum) and against the pending sealed
 candidates; pair records are audit metadata that never reach the prompt or the training text.
 """
+import pytest
 
 import hashlib
 import json
@@ -56,6 +57,7 @@ def _sha(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9b.jsonl')
 def test_v9b_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}
@@ -69,6 +71,7 @@ def test_v9b_rows_never_overlap_any_sealed_set(repo_root: Path) -> None:
         assert row["excerpt"][:300] not in first300, row["doc_id"]
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9b.jsonl')
 def test_v9b_rows_are_isolated_from_sealed_and_pending_sources(repo_root: Path) -> None:
     pending = _pending(repo_root)
     sealed_domains = {_sha(urlparse(r["source_url"]).netloc.lower()) for r in _sealed(repo_root) if r.get("source_url")}
@@ -83,6 +86,7 @@ def test_v9b_rows_are_isolated_from_sealed_and_pending_sources(repo_root: Path) 
         assert "source_url" not in row and "source_domain" not in row
 
 
+@pytest.mark.private_data('data/router/additions_thin_v9b.jsonl')
 def test_v9b_rows_meet_the_floor_with_v9_labels_and_are_new(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs/router/labels.json")
     floor = confidence_floor(load_sealed_config(repo_root / "configs/router/sealed_eval.json"))
@@ -93,6 +97,10 @@ def test_v9b_rows_meet_the_floor_with_v9_labels_and_are_new(repo_root: Path) -> 
     assert not {r["doc_id"] for r in rows} & earlier
 
 
+@pytest.mark.private_data(
+    'data/router/additions_thin_v9b.jsonl',
+    'data/router/vo_cr_pairs_v9b.json',
+)
 def test_pairs_join_an_issued_instrument_to_its_request(repo_root: Path) -> None:
     pairs = json.loads((repo_root / PAIRS).read_text(encoding="utf-8"))["pairs"]
     rows = {r["doc_id"]: r for r in _rows(repo_root, V9B) + _rows(repo_root, THIN)}
@@ -108,6 +116,10 @@ def test_pairs_join_an_issued_instrument_to_its_request(repo_root: Path) -> None
             assert req.get("pair_id") == p["pair_id"] and req.get("pair_role") == "request"
 
 
+@pytest.mark.private_data(
+    'data/router/vo_cr_pairs_v9b.json',
+    'data/router/additions_thin_v9b.jsonl',
+)
 def test_pair_metadata_never_reaches_the_prompt_or_text(repo_root: Path) -> None:
     pair_ids = {p["pair_id"] for p in json.loads((repo_root / PAIRS).read_text(encoding="utf-8"))["pairs"]}
     for split in ("train", "val"):
@@ -119,6 +131,11 @@ def test_pair_metadata_never_reaches_the_prompt_or_text(repo_root: Path) -> None
         assert not any(pid in row["excerpt"] for pid in pair_ids)
 
 
+@pytest.mark.private_data(
+    'data/router/additions_thin_v9b.jsonl',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_train_and_val_hold_zero_sealed_or_pending_rows_and_sources_never_span(repo_root: Path) -> None:
     sealed = _sealed(repo_root)
     shas = {str(r.get("file_sha256", "")).casefold() for r in sealed} - {""}

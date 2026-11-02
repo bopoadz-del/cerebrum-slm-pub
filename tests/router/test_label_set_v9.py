@@ -1,3 +1,4 @@
+import pytest
 import hashlib
 import json
 from pathlib import Path
@@ -80,6 +81,11 @@ def test_teacher_prompt_carries_v9_by_default(repo_root: Path) -> None:
         assert item["is_not"] in prompt
 
 
+@pytest.mark.private_data(
+    'data/router/relabel_v9.json',
+    'data/router/train.jsonl',
+    'data/router/val.jsonl',
+)
 def test_train_and_val_rows_carry_the_v9_prompt_and_labels(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels.json")
     prompt = prompt_for(labels)
@@ -106,6 +112,10 @@ def _rows(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+@pytest.mark.private_data(
+    'data/eval/router_unseen/sealed_labels.jsonl',
+    'data/eval/router_unseen/v8/sealed_labels.jsonl',
+)
 def test_sealed_retick_adds_no_rows_and_records_every_change(repo_root: Path) -> None:
     base = repo_root / "data" / "eval" / "router_unseen"
     record = json.loads((base / "v9_retick" / "label_changes.json").read_text(encoding="utf-8"))

@@ -1,3 +1,4 @@
+import pytest
 import csv
 from pathlib import Path
 
@@ -36,6 +37,10 @@ def test_in_pool_holdout_is_not_the_sealed_set(repo_root: Path) -> None:
     assert "It is not the sealed set." in text
 
 
+@pytest.mark.private_data(
+    'data/sealed/router/labelling_sheet.csv',
+    'data/eval/router_unseen/sealed_labels.jsonl',
+)
 def test_owner_line_and_sealed_drop_zone(repo_root: Path) -> None:
     readme = (repo_root / "data" / "sealed" / "router" / "README.md").read_text(encoding="utf-8")
     assert OWNER_LINE in readme.splitlines()
@@ -48,6 +53,7 @@ def test_owner_line_and_sealed_drop_zone(repo_root: Path) -> None:
     assert "data/eval/router_unseen/sealed_labels.jsonl" in pointer
 
 
+@pytest.mark.private_data('data/sealed/router/labelling_sheet.csv')
 def test_labelling_sheet_is_sixty_blank_rows(repo_root: Path) -> None:
     labels = load_labels(repo_root / "configs" / "router" / "labels_v5.json")
     path = repo_root / "data" / "sealed" / "router" / "labelling_sheet.csv"

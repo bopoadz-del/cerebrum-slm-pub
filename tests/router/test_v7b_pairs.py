@@ -45,6 +45,14 @@ def _refs(root: Path) -> dict[str, list[dict]]:
     return {key: load_rows(root / rel) for key, rel in pair_files(load_rules(root, RULES)).items()}
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7b/pairs_contrastive.jsonl',
+    'data/router/v7b/pairs_combined_form.jsonl',
+    'data/router/v7b/pairs_catch_all.jsonl',
+    'data/router/v7b/pairs_catch_all_sibling.jsonl',
+    'data/router/v7b/pairs_summary.json',
+)
 def test_v7b_files_equal_a_regeneration_and_v7_is_unchanged(repo_root: Path) -> None:
     assert v7_pairs.main(["--root", str(repo_root), "--train-config", CONFIG, "--check"]) == 0
     assert v7_pairs.main(["--root", str(repo_root), "--check"]) == 0
@@ -69,6 +77,7 @@ def test_v7b_recipe_is_v7_except_the_run_names(repo_root: Path) -> None:
         assert f'"{label}"' not in source and f"'{label}'" not in source, label
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_v7b_pairs_point_at_training_rows_and_materialise(repo_root: Path) -> None:
     _, label_set, labels, train = _setup(repo_root)
     by_id = {row["doc_id"]: row for row in train}
@@ -83,6 +92,7 @@ def test_v7b_pairs_point_at_training_rows_and_materialise(repo_root: Path) -> No
     assert all(item["messages"][1]["content"] in base_texts for item in examples)  # v7 isolation report covers v7b
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_v7b_contrastive_named_neighbours_and_edge_cap(repo_root: Path) -> None:
     rules, label_set, _, train = _setup(repo_root)
     neighbours = is_not_neighbours(label_set)
@@ -106,6 +116,7 @@ def test_v7b_contrastive_named_neighbours_and_edge_cap(repo_root: Path) -> None:
         assert all(edges[(label, x)] <= cap for x in hood)
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_v7b_sibling_pairs_are_catch_all_vs_catch_all_and_balanced(repo_root: Path) -> None:
     rules, _, _, _ = _setup(repo_root)
     refs = _refs(repo_root)
@@ -120,6 +131,7 @@ def test_v7b_sibling_pairs_are_catch_all_vs_catch_all_and_balanced(repo_root: Pa
         assert max(counts.values()) - min(counts.values()) <= 1
 
 
+@pytest.mark.private_data('data/router/train.jsonl')
 def test_project_round_robin_spreads_a_class_budget_over_projects(repo_root: Path) -> None:
     rules, label_set, labels, _ = _setup(repo_root)
     hood_label = next(label for label, hood in is_not_neighbours(label_set).items() if hood and label in labels)
@@ -138,6 +150,10 @@ def test_project_round_robin_spreads_a_class_budget_over_projects(repo_root: Pat
     assert len([r for r in hashed["contrastive"] if r["label"] == hood_label]) == 3
 
 
+@pytest.mark.private_data(
+    'data/router/train.jsonl',
+    'data/router/v7b/class_weights.json',
+)
 def test_v7b_weights_file_and_fit_use_the_v7b_config(tmp_path: Path, repo_root: Path) -> None:
     examples, _ = v7_training_examples(repo_root, RULES)
     names = [row["messages"][-1]["content"] for row in examples]

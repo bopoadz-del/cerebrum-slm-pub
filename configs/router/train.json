@@ -28,7 +28,7 @@
     "enabled": true,
     "recorded_at": "2026-10-06T03:45:00Z",
     "owner_clock": "2026-10-06 07:45",
-    "owner_order": "CHADi: Go. Training proceeds before the human stratified agreement check."
+    "owner_order": "the owner: Go. Training proceeds before the human stratified agreement check."
   },
   "sealed_candidates": "Master Folder and a few public web documents, not the Fork pool. The isolation guard stays on and runs again when the owner sheet is sealed.",
   "lora_config": "configs/lora/qwen3-4b-router-r16.json"

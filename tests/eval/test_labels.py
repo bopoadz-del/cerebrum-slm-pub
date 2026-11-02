@@ -1,3 +1,4 @@
+import pytest
 import ast
 import json
 from pathlib import Path
@@ -96,6 +97,10 @@ def test_blind_shape_labels_refusal_and_route():
     assert "synthetic" not in repr(routed)
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_real_splits_use_the_same_label_method(repo_root: Path):
     sets = dict(label_eval_sets(repo_root))
     inputs = load_registry_inputs(repo_root)
@@ -190,6 +195,10 @@ def test_eval_sources_do_not_call_the_training_reader():
             assert name != "training_open"
 
 
+@pytest.mark.private_data(
+    'data/held_out/pairs.jsonl',
+    'data/held_out/manifest.json',
+)
 def test_label_sources_do_not_embed_eval_item_text():
     root = repo_root()
     source = "\n".join(
@@ -294,6 +303,7 @@ def test_held_out_route_expects_the_registry_inputs(tmp_path: Path):
     assert labels[2].formula_id == "" and labels[2].required_inputs == ()
 
 
+@pytest.mark.private_data('data/retrieval/formula_registry.json')
 def test_training_targets_and_held_out_labels_share_the_registry_rule(repo_root: Path):
     import json as _json
 

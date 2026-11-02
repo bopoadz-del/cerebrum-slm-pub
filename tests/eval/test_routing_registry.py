@@ -14,6 +14,7 @@ from eval.tuned import grade_routing_or_raise
 from model.identity import repo_root
 
 
+@pytest.mark.private_data('data/retrieval/formula_registry.json')
 def test_held_out_and_blind_registries_load():
     held = load_held_out_routing_registry(repo_root())
     blind = load_blind_routing_registry(repo_root())
@@ -36,6 +37,7 @@ def test_bare_routing_is_refused():
         )
 
 
+@pytest.mark.private_data('data/retrieval/formula_registry.json')
 def test_routing_with_registry_grades():
     registry = load_held_out_routing_registry(repo_root())
     entry = registry.entries[0]
